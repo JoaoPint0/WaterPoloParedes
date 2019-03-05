@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Polo Aquatico Paredes</string>
+
+    <string name="home_bottom_nav_item_title">Home</string>
+    <string name="profile_bottom_nav_title">Perfil</string>
+    <string name="contacts_bottom_nav_title">Contactos</string>
+    <string name="athletes_bottom_nav_item_title">Atletas</string>
+
+    <string name="loading">A Carregar …</string>
+
+    <string name="payment_season_headline">Época %1$d/%2$d</string>
+
+    <string name="payment_paid">Pago</string>
+    <string name="payment_missing">Em falta</string>
+    <string name="no_payment">Férias</string>
+    <string name="unknown_payment">Não registado</string>
+
+    <string name="login_btn">Login</string>
+
+    <string name="login_email_hint">Email</string>
+    <string name="login_card_id_hint">Card Id</string>
+    <string name="logout_bottom_nav_item_title">Logout</string>
+    <string name="profile_contacts">Contactos</string>
+    <string name="profile_parents">Pais</string>
+    <string name="athlete_address_hint">Morada</string>
+    <string name="athlete_postal_code_hint">Código Postal</string>
+    <string name="name_hint">Nome</string>
+    <string name="mobile_number_hint">Telemovél</string>
+    <string name="email_hint">Email</string>
+    <string name="create_btn">Criar</string>
+    <string name="create_event_info_title">Informação do Evento</string>
+    <string name="create_personal_info_title">Informação Pessoal</string>
+    <string name="image_hint">Link da Imagem</string>
+    <string name="event_location_hint">Localização</string>
+    <string name="create_event_content_title">Conteudo</string>
+    <string name="content_hint">Conteudo</string>
+    <string name="empty_list">Nenhum resultado encontrado</string>
+    <string name="profile_observations">Observations</string>
+    <string name="observations_hint">Observations</string>
+    <string name="profile_payments">Payments</string>
+    <string name="required_field">Campo Obrigatório</string>
+    <string name="toggle_selected">Tem de escolher %1$s</string>
+    <string name="toggle_error_event_target">o Target</string>
+    <string name="low_priority">Baixa Prioridade</string>
+    <string name="high_priority">Alta Prioridade</string>
+    <string name="athlete_toggle_sex_error">Sexo</string>
+    <string name="athlete_toggle_level_error">Nível</string>
+    <string name="fields_required">Campo Obrigatório</string>
+    <string name="confirm_payment">Confirm Pagamento do mês de %1$s?</string>
+    <string name="pay_all_season_btn">Pagar Época</string>
+    <string name="payment_season">Deseja fazer o pagamento da Época?</string>
+    <string name="card_id_hint">Cartão Id</string>
+    <string name="delete">Apagar</string>
+    <string name="edit">Editar</string>
+    <string name="male">Masculino</string>
+    <string name="female">Feminino</string>
+    <string name="mini_polo">Mini Polo</string>
+    <string name="sub12">Sub-12</string>
+    <string name="infantil">Infantil</string>
+    <string name="juvenil">Juvenil</string>
+    <string name="a18">A18</string>
+    <string name="a20">A20</string>
+    <string name="senior">Senior</string>
+    <string name="create_error">Erro a criar</string>
+    <string name="edit_error">Erro a editar</string>
+    <string name="delete_error">Erro a apagar</string>
+    <string name="invalid_login">Login Inválido</string>
+    <string name="create_event">Criar Evento</string>
+    <string name="create_athlete">Criar Atleta</string>
+    <string name="add_new_payment_season">Adicionar Nova Época</string>
+</resources>

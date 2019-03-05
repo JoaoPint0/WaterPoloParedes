@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.endeavour.poloaquaticoparedes.ui.event.lobby.LobbyFragment"
+        android:label="main_fragment"
+        tools:layout="@layout/events_fragment">
+        <action
+            android:id="@+id/createEvent"
+            app:destination="@id/createEventFragment" />
+        <action
+            android:id="@+id/seeEvent"
+            app:destination="@id/eventDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/eventsFragment"
+        android:name="com.endeavour.poloaquaticoparedes.ui.event.EventFragment"
+        android:label="events_fragment"
+        tools:layout="@layout/events_fragment">
+        <action
+            android:id="@+id/createEvent"
+            app:destination="@id/createEventFragment" />
+        <action
+            android:id="@+id/seeEvent"
+            app:destination="@id/eventDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.endeavour.poloaquaticoparedes.ui.athletes.profile.ProfileFragment"
+        android:label="profile_fragment"
+        tools:layout="@layout/profile_fragment">
+
+        <argument
+            android:name="cardId"
+            android:defaultValue="0"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/seePayments"
+            app:destination="@id/paymentsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/athletesFragment"
+        android:name="com.endeavour.poloaquaticoparedes.ui.athletes.AthletesFragment"
+        android:label="athletes_fragment"
+        tools:layout="@layout/athletes_fragment">
+
+        <action
+            android:id="@+id/seeProfile"
+            app:destination="@id/profileFragment" />
+
+        <action
+            android:id="@+id/createAthlete"
+            app:destination="@id/createAthleteFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/paymentsFragment"
+        android:name="com.endeavour.poloaquaticoparedes.ui.athletes.payments.PaymentsFragment"
+        android:label="payments_fragment"
+        tools:layout="@layout/payments_fragment">
+
+        <argument android:name="cardId" />
+
+        <argument android:name="year" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.endeavour.poloaquaticoparedes.ui.login.LoginFragment"
+        android:label="login_fragment"
+        tools:layout="@layout/login_fragment" >
+
+        <action
+            android:id="@+id/seeAthletesList"
+            app:destination="@id/athletesFragment" />
+        <action
+            android:id="@+id/seeEventsList"
+            app:destination="@id/mainFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createAthleteFragment"
+        android:name="com.endeavour.poloaquaticoparedes.ui.athletes.create.CreateAthleteFragment"
+        android:label="CreateAthleteFragment">
+
+        <argument
+            android:name="cardId"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/createdAthlete"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/athletesFragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/createEventFragment"
+        android:name="com.endeavour.poloaquaticoparedes.ui.event.create.CreateEventFragment"
+        android:label="CreateEventFragment">
+
+        <argument android:name="id"
+            app:argType="long"/>
+
+        <action
+                android:id="@+id/createdEvent"
+                app:destination="@id/eventDetailsFragment"
+                app:popUpTo="@id/mainFragment"/>
+    </fragment>
+
+    <fragment
+            android:id="@+id/createGameFragment"
+            android:name="com.endeavour.poloaquaticoparedes.ui.event.create.CreateGameFragment"
+            android:label="CreateEventFragment">
+
+        <argument android:name="id"
+                  app:argType="long"/>
+
+
+        <action
+                android:id="@+id/createdGame"
+                app:destination="@id/gameDetailsFragment"
+                app:popUpTo="@id/mainFragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/eventDetailsFragment"
+        android:name="com.endeavour.poloaquaticoparedes.ui.event.details.EventDetailsFragment"
+        android:label="event_details_fragment"
+        tools:layout="@layout/event_details_fragment" >
+
+        <argument android:name="id"
+            app:argType="long"/>
+
+    </fragment>
+
+    <fragment
+            android:id="@+id/gameDetailsFragment"
+            android:name="com.endeavour.poloaquaticoparedes.ui.event.details.GameDetailsFragment"
+            android:label="game_details_fragment"
+            tools:layout="@layout/game_details_fragment" >
+
+        <argument android:name="id"
+                  app:argType="long"/>
+
+    </fragment>
+
+    <fragment
+            android:id="@+id/teamsFragment"
+            android:name="com.endeavour.poloaquaticoparedes.ui.event.details.TeamsFragment"
+            android:label="teams_fragment"
+            tools:layout="@layout/event_details_fragment" >
+
+        <argument android:name="id"
+                  app:argType="long"/>
+
+    </fragment>
+
+</navigation>

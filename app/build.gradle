@@ -1,0 +1,85 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: "io.fabric"
+
+android {
+    compileSdkVersion versions.compileSdk
+
+    defaultConfig {
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+
+        applicationId "com.endeavour.poloaquaticoparedes"
+        versionCode 3
+        versionName "1.2"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "androidx.core:core-ktx:${versions.coreKtx}"
+    implementation "com.android.support:support-annotations:${versions.supportLibrary}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"
+
+    //Lifecycle
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha02'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
+    kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
+
+    //Room
+    implementation "androidx.room:room-runtime:${versions.room}"
+    kapt "androidx.room:room-compiler:${versions.room}"
+
+    //Navigation
+    implementation "android.arch.navigation:navigation-fragment-ktx:${versions.navigation}"
+    implementation "android.arch.navigation:navigation-ui-ktx:${versions.navigation}"
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
+    implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}"
+
+    //ToggleButtons
+    implementation 'com.github.savvyapps:ToggleButtonLayout:1.2.0'
+
+    //Firebase
+    implementation "com.google.firebase:firebase-core:${versions.firebase}"
+    implementation "com.google.firebase:firebase-messaging:${versions.messaging}"
+    implementation "com.google.firebase:firebase-firestore:${versions.firestore}"
+    implementation "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}"
+
+    //Glide
+    implementation "com.github.bumptech.glide:glide:${versions.glide}"
+    implementation "com.github.bumptech.glide:okhttp3-integration:${versions.glide}"
+    implementation "com.github.bumptech.glide:recyclerview-integration:${versions.glide}"
+    kapt "com.github.bumptech.glide:compiler:${versions.glide}"
+}
+
+apply plugin: 'com.google.gms.google-services'

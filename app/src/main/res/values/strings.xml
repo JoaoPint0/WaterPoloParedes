@@ -1,0 +1,99 @@
+<resources>
+
+    <!--CONSTANTS-->
+    <string name="shared_preferences" translatable="false">shared_preferences</string>
+    <string name="card_id" translatable="false">card_id</string>
+    <string name="privileges" translatable="false">privileges</string>
+    <string name="email" translatable="false">email</string>
+    <string name="event" translatable="false">event</string>
+    <string name="firebase_token" translatable="false">firebase_token</string>
+
+    <string name="channel_id" translatable="false">polo_channel_1</string>
+    <string name="channel_name" translatable="false">Water Polo Paredes</string>
+    <string name="channel_description" translatable="false">Water Polo Paredes notification Channel</string>
+    <string name="water_polo_base_url" translatable="false">https://test-polo-app.herokuapp.com/</string>
+
+    <string name="app_name">Water Polo Paredes</string>
+
+    <string name="home_bottom_nav_item_title">Home</string>
+    <string name="profile_bottom_nav_title">Profile</string>
+    <string name="contacts_bottom_nav_title">Contacts</string>
+    <string name="athletes_bottom_nav_item_title">Athletes</string>
+    <string name="logout_bottom_nav_item_title">Logout</string>
+
+    <string name="loading">Loading …</string>
+
+    <string name="payment_season_headline">Season %1$d/%2$d</string>
+
+    <string name="payment_paid">Paid</string>
+    <string name="payment_missing">Missing</string>
+    <string name="no_payment">Holidays</string>
+    <string name="unknown_payment">Unregistered</string>
+
+    <string name="login_email_hint">Email</string>
+    <string name="login_card_id_hint">Card Id</string>
+    <string name="login_btn">Login</string>
+
+    <string name="profile_contacts">Contacts</string>
+    <string name="profile_parents">Parents</string>
+    <string name="athlete_address_hint">Address</string>
+    <string name="athlete_postal_code_hint">Postal Code</string>
+
+    <string name="name_hint">Name</string>
+    <string name="mobile_number_hint">Mobile Number</string>
+    <string name="email_hint">Email</string>
+
+    <string name="create_btn">Create</string>
+    <string name="create_event_info_title">Event Info</string>
+    <string name="create_personal_info_title">Personal Info</string>
+    <string name="image_hint">Image Url</string>
+    <string name="event_location_hint">Location</string>
+    <string name="create_event_content_title">Content</string>
+    <string name="content_hint">Content</string>
+    <string name="empty_list">No Results Found</string>
+    <string name="profile_observations">Observations</string>
+    <string name="observations_hint">Observations</string>
+    <string name="profile_payments">Payments</string>
+    <string name="required_field">Required Field</string>
+    <string name="toggle_selected">You must select a %1$s value</string>
+    <string name="toggle_error_event_target">Event Target</string>
+    <string name="low_priority">Low Priority</string>
+    <string name="high_priority">High Priority</string>
+    <string name="athlete_toggle_sex_error">Sex</string>
+    <string name="athlete_toggle_level_error">Level</string>
+    <string name="fields_required">Fields Required</string>
+    <string name="confirm_payment">Confirm payment of month of %1$s?</string>
+    <string name="pay_all_season_btn">Pay all season</string>
+    <string name="payment_season">Do wish to pay athlete full season?</string>
+    <string name="card_id_hint">Card Id</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="mini_polo">Mini Polo</string>
+    <string name="sub12">Sub-12</string>
+    <string name="infantil">Infantil</string>
+    <string name="juvenil">Juvenil</string>
+    <string name="a18">A18</string>
+    <string name="a20">A20</string>
+    <string name="senior">Senior</string>
+    <string name="create_error">Creation Failed</string>
+    <string name="edit_error">Edition Failed</string>
+    <string name="delete_error">Deletion Failed</string>
+    <string name="invalid_login">Invalid User</string>
+    <string name="create_event">Create Event</string>
+    <string name="create_athlete">Create Athlete</string>
+    <string name="add_new_payment_season">Add New Season</string>
+    <string name="is_a_game_event">Is a Game Event?</string>
+    <string name="home_hint">Home</string>
+    <string name="away_hint">Away</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_game_info_title">Game Info</string>
+    <string name="game_creation_new_team">Create new team</string>
+    <string name="game_competition_hint">Competition</string>
+    <string name="team_logo">Logo</string>
+    <string name="team_name">Name</string>
+    <string name="team_acronym">Acronym</string>
+</resources>

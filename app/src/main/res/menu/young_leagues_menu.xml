@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/toggle_mini_polo"
+        android:title="@string/mini_polo" />
+
+    <item
+        android:id="@+id/toggle_sub12"
+        android:title="@string/sub12" />
+
+    <item
+        android:id="@+id/toggle_infantil"
+        android:title="@string/infantil" />
+
+    <item android:id="@+id/toggle_juvenil"
+          android:title="@string/juvenil"/>
+
+</menu>

@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="@dimen/max_width"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:text="@string/create_personal_info_title" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/athlete_name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:hint="@string/name_hint"
+                    app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/athlete_name_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:maxLines="1"
+                        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/athlete_card_id_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:hint="@string/card_id_hint"
+                    app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/athlete_card_id_edit"
+                        android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="9"
+                        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
+                    android:id="@+id/athlete_level_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    app:allowDeselection="false"
+                    app:menu="@menu/young_leagues_menu" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <com.savvyapps.togglebuttonlayout.ToggleButtonLayout
+                        android:id="@+id/athlete_sex_toggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        app:menu="@menu/sex_menu" />
+
+                    <TextView
+                        android:id="@+id/athlete_birthday"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="8dp"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:drawableEnd="@drawable/ic_calendar" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/athlete_address_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:hint="@string/athlete_address_hint"
+                    app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/athlete_address_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPostalAddress"
+                        android:maxLines="2"
+                        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/athlete_postal_code_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:hint="@string/athlete_postal_code_hint"
+                    app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/athlete_postal_code_edit"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPostalAddress"
+                        android:maxLength="8"
+                        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="@dimen/max_width"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:text="@string/profile_contacts" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/athlete_email_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:hint="@string/email_hint"
+                    app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/athlete_email_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/athlete_mobile_number_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:hint="@string/mobile_number_hint"
+                    app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/athlete_mobile_number_edit"
+                        android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="9"
+                        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:id="@+id/parents_layout"
+                android:layout_width="@dimen/max_width"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:text="@string/profile_parents" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/parent_1_name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:hint="@string/name_hint"
+                    app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/parent_1_name_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:maxLines="1"
+                        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/parent_1_email_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:hint="@string/email_hint"
+                    app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/parent_1_email_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/parent_1_mobile_number_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginBottom="24dp"
+                    android:hint="@string/mobile_number_hint"
+                    app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/parent_1_mobile_number_edit"
+                        android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="9"
+                        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/parent_2_name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:hint="@string/name_hint"
+                    app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/parent_2_name_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:maxLines="1"
+                        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/parent_2_email_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:hint="@string/email_hint"
+                    app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/parent_2_email_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/parent_2_mobile_number_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:hint="@string/mobile_number_hint"
+                    app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/parent_2_mobile_number_edit"
+                        android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="9"
+                        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="@dimen/max_width"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:text="@string/profile_observations" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/athlete_observation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/observations_hint"
+                app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/athlete_observation_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+        <Button
+            android:id="@+id/create_athlete_btn"
+            android:layout_width="@dimen/max_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:padding="8dp"
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/create_btn"
+            android:textColor="@color/white"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/delete_athlete_btn"
+            android:layout_width="@dimen/max_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="48dp"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:backgroundTint="@color/white"
+            android:text="@string/delete"
+            android:textColor="@color/colorAccent"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

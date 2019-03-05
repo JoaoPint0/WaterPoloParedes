@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1020232075452",
+    "firebase_url": "https://water-polo-paredes.firebaseio.com",
+    "project_id": "water-polo-paredes",
+    "storage_bucket": "water-polo-paredes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020232075452:android:5e9573638236b7ed",
+        "android_client_info": {
+          "package_name": "com.endeavour.poloaquaticoparedes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1020232075452-a0erp6l0hfcjbshpm3k4r12428ar2ku0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnFmfHunZO2tg4vzOT0mfiK1zjgDY4JdY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
