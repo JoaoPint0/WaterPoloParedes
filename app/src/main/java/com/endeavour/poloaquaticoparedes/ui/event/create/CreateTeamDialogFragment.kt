@@ -10,13 +10,12 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.endeavour.poloaquaticoparedes.Injection
 import com.endeavour.poloaquaticoparedes.R
 import com.endeavour.poloaquaticoparedes.isNotEmpty
+import com.endeavour.poloaquaticoparedes.loadGlideImage
 import com.endeavour.poloaquaticoparedes.model.Team
-import com.endeavour.poloaquaticoparedes.ui.game.GameViewModel
+import com.endeavour.poloaquaticoparedes.ui.event.GameViewModel
 import kotlinx.android.synthetic.main.create_team_dialog.*
 import kotlinx.android.synthetic.main.create_team_dialog.view.*
 
@@ -29,10 +28,7 @@ class CreateTeamDialogFragment : DialogFragment() {
 
         view.team_logo_edit.addTextChangedListener(object:TextWatcher{
             override fun afterTextChanged(s: Editable?) {
-                Glide.with(view.context)
-                    .load(s.toString())
-                    .apply(RequestOptions().centerCrop())
-                    .into(view.dialog_team_logo)
+                loadGlideImage(view.dialog_team_logo, s.toString())
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -45,7 +41,12 @@ class CreateTeamDialogFragment : DialogFragment() {
         view.create_team_btn.setOnClickListener {
             if (isTeamValid()){
                 viewModel.createTeam(getTeam()).observe(this, Observer {
-                    if (it.success) dismiss() else Toast.makeText(context, "Error Creating Team", Toast.LENGTH_LONG).show()
+                    if (it.success) {
+                        dismiss()
+                        viewModel.getTeams()
+                    } else {
+                        Toast.makeText(context, "Error Creating Team", Toast.LENGTH_LONG).show()
+                    }
                 })
             }
         }
@@ -60,7 +61,7 @@ class CreateTeamDialogFragment : DialogFragment() {
         return Team(team_name_edit.text.toString(),
             team_acronym_edit.text.toString(),
             team_logo_edit.text.toString(),
-            emptyList(),
-            emptyList())
+            mutableListOf(),
+            mutableListOf())
     }
 }

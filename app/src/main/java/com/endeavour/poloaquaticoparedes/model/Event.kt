@@ -7,7 +7,7 @@ import java.util.*
 @Entity(tableName = "events")
 data class Event(
     @PrimaryKey var id: Long,
-    val isGame: Boolean,
+    val publicEvent: Boolean,
     val name: String,
     val picture: String,
     val location: String,

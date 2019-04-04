@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".ui.event.details.game.editor.GameEditorFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="8dp"
+                android:layout_marginTop="16dp">
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:padding="8dp"
+                      android:layout_marginStart="24dp"
+                      android:text="Round"
+                      app:layout_constraintTop_toTopOf="parent"
+                      app:layout_constraintStart_toStartOf="parent"
+                      android:id="@+id/round_title"/>
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:padding="8dp"
+                      android:text="Timer"
+                      app:layout_constraintEnd_toEndOf="parent"
+                      app:layout_constraintTop_toTopOf="parent"
+                      app:layout_constraintStart_toEndOf="@+id/round_title"
+                      android:id="@+id/timer_title"
+                      app:layout_constraintHorizontal_bias="0.55"/>
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textSize="30sp"
+                      android:text="1"
+                      app:layout_constraintTop_toBottomOf="@+id/round_title"
+                      app:layout_constraintEnd_toEndOf="@+id/round_title"
+                      app:layout_constraintStart_toStartOf="@+id/round_title"
+                      android:id="@+id/round_count"/>
+
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textSize="30sp"
+                      android:text=" 8:00"
+                      app:layout_constraintTop_toBottomOf="@+id/timer_title"
+                      app:layout_constraintEnd_toEndOf="@+id/timer_title"
+                      app:layout_constraintStart_toStartOf="@+id/timer_title"
+                      android:id="@+id/timer_count"/>
+
+            <Button android:id="@+id/next_round"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:text="Next Round"
+                    android:padding="4dp"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="@+id/round_count"
+                    app:layout_constraintEnd_toEndOf="@+id/round_count"
+                    app:layout_constraintTop_toTopOf="@+id/play_button"
+                    app:layout_constraintBottom_toBottomOf="@+id/play_button"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/play_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_play"
+                    android:background="@color/colorAccent"
+                    android:layout_margin="16dp"
+                    app:layout_constraintEnd_toStartOf="@+id/pause_button"
+                    app:layout_constraintTop_toBottomOf="@+id/timer_count"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/pause_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_pause"
+                    android:background="@color/colorAccent"
+                    app:layout_constraintTop_toBottomOf="@+id/timer_count"
+                    app:layout_constraintEnd_toEndOf="@+id/timer_count"
+                    app:layout_constraintStart_toStartOf="@+id/timer_count"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/reset_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_reset"
+                    android:background="@color/colorAccent"
+                    app:layout_constraintStart_toEndOf="@+id/pause_button"
+                    app:layout_constraintTop_toBottomOf="@+id/timer_count"
+            />
+
+            <LinearLayout android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+                          android:layout_marginTop="8dp"
+                          app:layout_constraintTop_toBottomOf="@+id/pause_button"
+                          app:layout_constraintEnd_toEndOf="@+id/pause_button"
+                          app:layout_constraintStart_toStartOf="@+id/pause_button"
+                          android:id="@+id/minutes_layout">
+
+                <com.google.android.material.button.MaterialButton
+                        android:id="@+id/add_min"
+                        style="@style/Widget.MaterialComponents.Button.Icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:text="1 min"
+                        app:icon="@drawable/ic_add"/>
+
+                <com.google.android.material.button.MaterialButton
+                        android:id="@+id/subtract_min"
+                        style="@style/Widget.MaterialComponents.Button.Icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:text="1 min"
+                        app:icon="@drawable/ic_minus"/>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="8dp"
+                android:layout_marginTop="16dp">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/activity_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/activity_team"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/activity_type"
+                    app:layout_constraintHorizontal_bias="0.66"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/activity_player"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_team"
+                    app:layout_constraintEnd_toEndOf="@+id/activity_team"/>
+
+            <Button
+                    android:id="@+id/create_activity_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/colorAccent"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:text="@string/create_btn"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_player"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="120dp">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/member_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/member_team"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/member_type"
+                    app:layout_constraintHorizontal_bias="0.66"/>
+
+            <TextView
+                    android:id="@+id/member_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    app:layout_constraintBottom_toBottomOf="@id/member_name_input"
+                    app:layout_constraintStart_toStartOf="@id/member_type"
+                    tools:text="1"
+                    app:layout_constraintTop_toTopOf="@+id/member_name_input"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/member_name_input"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:hint="Name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:layout_constraintStart_toEndOf="@id/member_number"
+                    app:layout_constraintTop_toBottomOf="@+id/member_type"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/member_name_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:maxLines="1"
+                        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                    android:id="@+id/create_member_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/colorAccent"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:text="@string/create_btn"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/member_name_input"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

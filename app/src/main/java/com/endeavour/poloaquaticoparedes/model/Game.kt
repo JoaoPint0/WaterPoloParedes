@@ -4,13 +4,28 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 data class Game(
-    @PrimaryKey var id: Long,
+    @PrimaryKey var id: String,
     val home: Team,
     val away: Team,
-    val target: List<Leagues>,
+    val target: Leagues,
     val date: Date,
     val competition: String,
     val local: String,
-    val referees: List<String>,
-    val activity: List<GameEvent>
-)
+    var round: Int,
+    var time : Long,
+    val referees: MutableList<String>,
+    val activity: MutableList<GameEvent>
+) {
+    constructor() : this(
+        "",
+        Team("", "", "", mutableListOf(), mutableListOf()),
+        Team("", "", "", mutableListOf(), mutableListOf()),
+        Leagues.SENIOR_MALE,
+        Date(),
+        "",
+        "",
+        1,
+        0L,
+        mutableListOf(),
+        mutableListOf())
+}

@@ -6,10 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.annotation.LayoutRes
+import com.endeavour.poloaquaticoparedes.loadGlideImage
 import com.endeavour.poloaquaticoparedes.model.Team
 import kotlinx.android.synthetic.main.team_view_item.view.*
 
-class TeamSpinnerAdapter(context: Context, @LayoutRes private val layoutResource: Int, private val teams: List<Team>): ArrayAdapter<Team>(context, layoutResource, teams) {
+class TeamSpinnerAdapter(context: Context, @LayoutRes private val layoutResource: Int): ArrayAdapter<Team>(context, layoutResource) {
+
+    private var teams: List<Team> = emptyList()
+
+    fun setTeams(list: List<Team>){
+        clear()
+        teams = list
+        addAll(list)
+        notifyDataSetChanged()
+    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         return createViewFromResource(position, convertView, parent)
@@ -22,6 +32,7 @@ class TeamSpinnerAdapter(context: Context, @LayoutRes private val layoutResource
     private fun createViewFromResource(position: Int, convertView: View?, parent: ViewGroup?): View{
         val view =  LayoutInflater.from(context).inflate(layoutResource, parent, false)
         view.team_name.text = teams[position].name
+        loadGlideImage(view.team_logo, teams[position].logo)
         return view
     }
 }

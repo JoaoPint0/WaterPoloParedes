@@ -67,11 +67,6 @@ class WaterPoloLocalCache(
         return eventDao.eventsByName(query)
     }
 
-    fun getEventById(id: Long) : LiveData<Event>{
-
-        return eventDao.eventById(id)
-    }
-
     fun allEvents(): LiveData<List<Event>> {
         return eventDao.allEvents()
     }

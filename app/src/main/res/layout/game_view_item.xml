@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/empty_games"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        app:cardCornerRadius="8dp" android:elevation="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+        <ImageView android:layout_width="@dimen/game_logo_size"
+                   android:layout_height="@dimen/game_logo_size"
+                   android:id="@+id/home_team_logo"
+                   android:transitionName="home_team_logo"
+                   android:layout_margin="8dp"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintBottom_toTopOf="@+id/home_team_name"/>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/home_team_name"
+                  android:layout_margin="8dp"
+                  tools:text="Paredes"
+                  android:textSize="16sp"
+                  android:textStyle="bold"
+                  app:layout_constraintEnd_toEndOf="@+id/home_team_logo"
+                  app:layout_constraintStart_toStartOf="@+id/home_team_logo" android:layout_marginBottom="8dp"
+                  app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="22dp" android:id="@+id/game_date"
+                  tools:text="Sat 16/03"
+                  android:layout_marginTop="8dp"
+                  app:layout_constraintEnd_toStartOf="@+id/away_team_logo"
+                  app:layout_constraintStart_toEndOf="@+id/home_team_logo"
+                  app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/game_competition"
+                  tools:text="Taça de Portugal"
+                  android:layout_marginBottom="8dp"
+                  app:layout_constraintStart_toEndOf="@+id/home_team_logo"
+                  app:layout_constraintTop_toBottomOf="@+id/game_date"
+                  app:layout_constraintBottom_toTopOf="@+id/game_score_or_time"
+                  app:layout_constraintEnd_toStartOf="@+id/away_team_logo"/>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/game_score_or_time"
+                  tools:text="18:30"
+                  android:textSize="24sp"
+                  android:textStyle="bold"
+                  android:layout_margin="8dp"
+                  app:layout_constraintEnd_toStartOf="@+id/away_team_logo"
+                  app:layout_constraintStart_toEndOf="@+id/home_team_logo"
+                  app:layout_constraintBottom_toTopOf="@+id/game_league"/>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/game_league"
+                  tools:text="Senior - Male"
+                  android:layout_margin="8dp"
+                  app:layout_constraintStart_toEndOf="@+id/home_team_logo"
+                  app:layout_constraintEnd_toStartOf="@+id/away_team_logo"
+                  app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageView android:layout_width="@dimen/game_logo_size"
+                   android:layout_height="@dimen/game_logo_size"
+                   android:id="@+id/away_team_logo"
+                   android:layout_margin="8dp"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   android:layout_marginBottom="8dp"
+                   app:layout_constraintBottom_toTopOf="@+id/away_team_name"/>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/away_team_name"
+                  android:layout_margin="8dp"
+                  tools:text="Benfica"
+                  android:textSize="16sp"
+                  android:textStyle="bold"
+                  app:layout_constraintEnd_toEndOf="@+id/away_team_logo"
+                  app:layout_constraintStart_toStartOf="@+id/away_team_logo"
+                  app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

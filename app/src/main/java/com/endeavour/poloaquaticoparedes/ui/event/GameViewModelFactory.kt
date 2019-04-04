@@ -3,7 +3,6 @@ package com.endeavour.poloaquaticoparedes.ui.event
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.endeavour.poloaquaticoparedes.repository.WaterPoloRepository
-import com.endeavour.poloaquaticoparedes.ui.game.GameViewModel
 
 class GameViewModelFactory(private val repository: WaterPoloRepository) : ViewModelProvider.Factory {
 

@@ -10,7 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.endeavour.poloaquaticoparedes.*
 import com.endeavour.poloaquaticoparedes.databinding.CreateEventFragmentBinding
 import com.endeavour.poloaquaticoparedes.model.Event
@@ -60,12 +60,12 @@ class CreateEventFragment : Fragment() {
 
         event_date.setOnClickListener {
 
-            createDatePicker(fragmentManager, it as TextView)
+            createDatePicker(fragmentManager!!, it as TextView)
         }
 
         event_time.setOnClickListener {
 
-            createTimePicker(fragmentManager, it as TextView)
+            createTimePicker(fragmentManager!!, it as TextView)
         }
 
         create_event_btn.setOnClickListener {
@@ -148,16 +148,13 @@ class CreateEventFragment : Fragment() {
     }
 
     private fun setupPrioritySpinner() {
-        val spinner = event_priority
         ArrayAdapter(
                 context!!,
                 android.R.layout.simple_spinner_item,
                 listOf(getString(R.string.low_priority), getString(R.string.high_priority))
         ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            spinner.adapter = adapter
+            event_priority.adapter = adapter
         }
     }
 
@@ -177,16 +174,16 @@ class CreateEventFragment : Fragment() {
 
         val (day, month, year) = event_date.text.toString().split("/").map { it.toInt() }
         val (hour, minute) = event_time.text.toString().split(":").map { it.toInt() }
-        val isGame = viewModel.isGameEvent.get()
+        val targets = getEventTargets(event_target_young_leagues_toggle,event_target_older_leagues_toggle,event_target_sex_toggle)
 
         return Event(id,
-            false,
+            isPublicEvent.isChecked,
             event_name_edit.text.toString(),
             event_image_edit.text.toString(),
             event_location_edit.text.toString(),
             Date(year-1900, month-1, day, hour, minute, 0),
             getEventPriority(),
-            getEventTargets(),
+            targets,
             event_content_edit.text.toString())
     }
 
@@ -199,8 +196,8 @@ class CreateEventFragment : Fragment() {
             if(it.success){
 
                 val bundle =  Bundle()
-                bundle.putLong("id",it.id)
-                findNavController().navigate(R.id.createdEvent, bundle)
+                bundle.putLong("id",it.id.toLong())
+                findNavController(this).navigate(R.id.createdEvent, bundle)
             } else {
                 Toast.makeText(context, getString(R.string.create_error), Toast.LENGTH_SHORT).show()
             }
@@ -216,7 +213,7 @@ class CreateEventFragment : Fragment() {
             if(it == true){
                 val bundle =  Bundle()
                 bundle.putLong("id",event.id)
-                findNavController().navigate(R.id.createdEvent, bundle)
+                findNavController(this).navigate(R.id.createdEvent, bundle)
             } else {
                 Toast.makeText(context, getString(R.string.edit_error), Toast.LENGTH_SHORT).show()
             }
@@ -227,35 +224,11 @@ class CreateEventFragment : Fragment() {
 
         viewModel.deleteEvent(id).observe(this, androidx.lifecycle.Observer {
             if(it == true){
-                findNavController().navigate(R.id.mainFragment)
+                findNavController(this).navigate(R.id.mainFragment)
             } else {
                 Toast.makeText(context, getString(R.string.delete_error), Toast.LENGTH_SHORT).show()
             }
         })
-    }
-
-    private fun getEventTargets(): List<Leagues> {
-
-        val toggles = ArrayList<String>()
-        val leagues = ArrayList<Leagues>()
-        toggles.addAll(event_target_young_leagues_toggle.selectedToggles().map { it.title.toString()})
-        toggles.addAll(event_target_older_leagues_toggle.selectedToggles().map { it.title.toString()})
-
-        val isMale = event_target_sex_toggle.selectedToggles()[0].isSelected
-
-        for (target in toggles){
-            leagues.add(when (target) {
-                resources.getString(R.string.mini_polo) -> Leagues.MINIPOLO
-                resources.getString(R.string.sub12) -> Leagues.SUB12
-                resources.getString(R.string.infantil)-> if(isMale) Leagues.INFANTIL_MALE else Leagues.INFANTIL_FEMALE
-                resources.getString(R.string.juvenil) -> if(isMale) Leagues.JUVENIL_MALE else Leagues.JUVENIL_FEMALE
-                resources.getString(R.string.a18) ->     if(isMale) Leagues.A18_MALE else Leagues.A18_FEMALE
-                resources.getString(R.string.a20) ->     if(isMale) Leagues.A20_MALE else Leagues.A20_FEMALE
-                resources.getString(R.string.senior) ->  if(isMale) Leagues.SENIOR_MALE else Leagues.SENIOR_FEMALE
-                else -> return emptyList()
-            })
-        }
-        return leagues
     }
 
     private fun getEventPriority(): Long {

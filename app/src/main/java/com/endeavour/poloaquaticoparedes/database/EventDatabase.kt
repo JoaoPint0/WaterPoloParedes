@@ -9,7 +9,7 @@ import com.endeavour.poloaquaticoparedes.model.Event
 
 @Database(
         entities = [Event::class],
-        version = 7,
+        version = 8,
         exportSchema = false
 )
 @TypeConverters(Converters::class)

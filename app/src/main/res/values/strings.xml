@@ -51,6 +51,7 @@
     <string name="create_event_content_title">Content</string>
     <string name="content_hint">Content</string>
     <string name="empty_list">No Results Found</string>
+    <string name="no_games_found">No Game found</string>
     <string name="profile_observations">Observations</string>
     <string name="observations_hint">Observations</string>
     <string name="profile_payments">Payments</string>
@@ -84,16 +85,31 @@
     <string name="create_event">Create Event</string>
     <string name="create_athlete">Create Athlete</string>
     <string name="add_new_payment_season">Add New Season</string>
-    <string name="is_a_game_event">Is a Game Event?</string>
+    <string name="is_a_game_event">Is a Public Event?</string>
     <string name="home_hint">Home</string>
     <string name="away_hint">Away</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="create_game_info_title">Game Info</string>
     <string name="game_creation_new_team">Create new team</string>
     <string name="game_competition_hint">Competition</string>
+
+    <!--Create team-->
     <string name="team_logo">Logo</string>
     <string name="team_name">Name</string>
     <string name="team_acronym">Acronym</string>
+
+    <!--Game Type Events-->
+    <string name="goal">Goal</string>
+    <string name="timeout">Timeout</string>
+    <string name="exclusion">Exclusion</string>
+    <string name="yellow_card">Yellow Card</string>
+    <string name="red_card">Red Card</string>
+    <string name="penalty">Penalty</string>
+
+    <!--Member Types-->
+    <string name="player">Player</string>
+    <string name="coach">Coach</string>
+    <string name="referee">Referee</string>
+    <string name="match_over">Match Over</string>
+    <string name="public_login"><u>Continue without an account</u></string>
+
 </resources>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:gravity="right"
+                  android:layout_margin="8dp"
+                  app:layout_constraintEnd_toStartOf="@+id/activity_home_icon"
+                  app:layout_constraintTop_toTopOf="@+id/activity_time" app:layout_constraintBottom_toBottomOf="@+id/activity_time">
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/activity_home_name"
+                  android:textStyle="bold"
+                  android:textSize="14sp"
+                  tools:text="João"/>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/activity_home_comment"
+                  android:textStyle="bold"
+                  android:textSize="12sp"
+                  android:textColor="@color/darkGray"
+                  tools:text="Red Card"/>
+
+    </LinearLayout>
+
+    <ImageView android:layout_width="24dp"
+               android:layout_height="24dp"
+               android:layout_margin="8dp"
+               android:src="@drawable/ic_red_card"
+               android:id="@+id/activity_home_icon"
+               app:layout_constraintEnd_toStartOf="@+id/activity_time"
+               app:layout_constraintTop_toTopOf="@+id/activity_time"
+               app:layout_constraintBottom_toBottomOf="@+id/activity_time"/>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_margin="16dp"
+              android:padding="8dp"
+              android:id="@+id/activity_time"
+              android:textSize="16sp"
+              android:textColor="@color/colorPrimaryDark"
+              tools:text="1:23"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView android:layout_width="24dp"
+               android:layout_height="24dp"
+               android:layout_margin="8dp"
+               android:src="@drawable/ic_yellow_card"
+               android:id="@+id/activity_away_icon"
+               app:layout_constraintStart_toEndOf="@+id/activity_time"
+               app:layout_constraintTop_toTopOf="@+id/activity_time" app:layout_constraintBottom_toBottomOf="@+id/activity_time"/>
+
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:gravity="left"
+                  android:layout_margin="8dp"
+                  app:layout_constraintStart_toEndOf="@+id/activity_away_icon"
+                  app:layout_constraintTop_toTopOf="@+id/activity_time"
+                  app:layout_constraintBottom_toBottomOf="@+id/activity_time" android:id="@+id/linearLayout2">
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/activity_away_name"
+                  android:textStyle="bold"
+                  android:textSize="14sp"
+                  tools:text="João"/>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/activity_away_comment"
+                  android:textStyle="bold"
+                  android:textSize="12sp"
+                  android:textColor="@color/darkGray"
+                  tools:text="Yellow Card"/>
+
+    </LinearLayout>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_margin="8dp"
+              android:padding="8dp"
+              android:id="@+id/activity_new_round"
+              android:textStyle="bold"
+              android:textSize="16sp"
+              tools:text=" Round start 1"
+              app:layout_constraintEnd_toEndOf="@+id/activity_time"
+              app:layout_constraintStart_toStartOf="@+id/activity_time"
+              app:layout_constraintBottom_toTopOf="@+id/activity_round_margin" app:layout_constraintTop_toBottomOf="@+id/activity_time"/>
+
+    <View android:id="@+id/activity_round_margin"
+          android:layout_width="match_parent"
+          android:layout_height="16dp"
+          android:background="@color/gray"
+          android:layout_marginTop="8dp"
+          app:layout_constraintTop_toBottomOf="@+id/activity_new_round"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

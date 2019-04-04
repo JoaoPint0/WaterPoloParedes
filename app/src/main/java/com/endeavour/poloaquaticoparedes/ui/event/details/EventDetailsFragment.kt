@@ -10,12 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.endeavour.poloaquaticoparedes.Injection
-import com.endeavour.poloaquaticoparedes.R
-import com.endeavour.poloaquaticoparedes.formatDate
-import com.endeavour.poloaquaticoparedes.formatTime
+import com.endeavour.poloaquaticoparedes.*
 import com.endeavour.poloaquaticoparedes.model.Event
 import com.endeavour.poloaquaticoparedes.ui.event.EventViewModel
 import kotlinx.android.synthetic.main.event_details_fragment.*
@@ -75,16 +70,13 @@ class EventDetailsFragment : Fragment() {
 
             val bundle = Bundle()
             bundle.putLong("id", event.id)
-            Navigation.findNavController(it).navigate( if(event.isGame) R.id.createGameFragment else R.id.createEventFragment, bundle)
+            Navigation.findNavController(it).navigate(R.id.createEventFragment, bundle)
         }
     }
 
     private fun setupEventPicture(picture: String) {
 
-        Glide.with(this)
-            .load(picture)
-            .apply(RequestOptions().centerCrop())
-            .into(event_picture)
+        loadGlideImage(event_picture, picture)
     }
 
 }

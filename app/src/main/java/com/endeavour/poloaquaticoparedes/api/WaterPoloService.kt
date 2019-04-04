@@ -385,7 +385,7 @@ fun deleteEvent(
 
 fun searchAllTeams(
     service: WaterPoloService,
-    onSuccess: (events: List<Team>) -> Unit,
+    onSuccess: (teams: List<Team>) -> Unit,
     onError: (error: String) -> Unit) {
 
     service.searchAllTeams().enqueue(
@@ -438,6 +438,89 @@ fun createTeam(
     )
 }
 
+fun searchAllGames(
+    service: WaterPoloService,
+    onSuccess: (games: List<Game>) -> Unit,
+    onError: (error: String) -> Unit) {
+
+    service.searchAllGames().enqueue(
+        object : Callback<List<Game>> {
+            override fun onFailure(call: Call<List<Game>>?, t: Throwable) {
+                Log.d(TAG, "fail to get data")
+                onError(t.message ?: "unknown error")
+            }
+
+            override fun onResponse(
+                call: Call<List<Game>>?,
+                response: Response<List<Game>>
+            ) {
+                Log.d(TAG, "got a response $response")
+                if (response.isSuccessful) {
+                    val games = response.body() ?: emptyList()
+                    onSuccess(games)
+                } else {
+                    onError(response.errorBody()?.string() ?: "Unknown error")
+                }
+            }
+        }
+    )
+}
+
+fun getGameById(
+    service: WaterPoloService,
+    id: Long,
+    onSuccess: (game: Game?) -> Unit,
+    onError: (error: String) -> Unit) {
+
+    service.getGameById(id).enqueue(
+        object : Callback<Game> {
+            override fun onFailure(call: Call<Game>?, t: Throwable) {
+                Log.d(TAG, "fail to get data")
+                onError(t.message ?: "unknown error")
+            }
+
+            override fun onResponse(
+                call: Call<Game>?,
+                response: Response<Game>
+            ) {
+                Log.d(TAG, "got a response $response")
+                if (response.isSuccessful) {
+                    val game = response.body()
+                    onSuccess(game)
+                } else {
+                    onError(response.errorBody()?.string() ?: "Unknown error")
+                }
+            }
+        }
+    )
+}
+
+fun createGame(
+    service: WaterPoloService,
+    newGame: Game,
+    onSuccess: (response: ApiResponse?) -> Unit,
+    onError: (error: String) -> Unit) {
+
+    service.createGame(newGame).enqueue(
+        object : Callback<ApiResponse> {
+            override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
+                onError(t.message ?: "createAccount failure error")
+            }
+
+            override fun onResponse(
+                call: Call<ApiResponse>?,
+                response: Response<ApiResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val success = response.body()
+                    onSuccess(success)
+                } else {
+                    onError(response.errorBody()?.string() ?: "Unknown error")
+                }
+            }
+        }
+    )
+}
 
 interface WaterPoloService {
 
@@ -485,6 +568,15 @@ interface WaterPoloService {
 
     @POST("team/create")
     fun createTeam(@Body team: Team): Call<ApiResponse>
+
+    @GET("game/all")
+    fun searchAllGames(): Call<List<Game>>
+
+    @GET("game/{id}")
+    fun getGameById(@Path("id") id: Long): Call<Game>
+
+    @POST("team/create")
+    fun createGame(@Body game: Game): Call<ApiResponse>
 
     companion object {
         private var BASE_URL = ""

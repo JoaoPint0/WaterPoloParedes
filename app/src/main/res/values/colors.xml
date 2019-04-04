@@ -8,7 +8,7 @@
     <color name="red">#DB4437</color>
     <color name="green">#0F9D58</color>
     <color name="yellow">#F4B400</color>
-    <color name="gray">#E0E0E0</color>
+    <color name="gray">#eceff1</color>
     <color name="darkGray">#9E9E9E</color>
     <color name="black">#000</color>
 </resources>

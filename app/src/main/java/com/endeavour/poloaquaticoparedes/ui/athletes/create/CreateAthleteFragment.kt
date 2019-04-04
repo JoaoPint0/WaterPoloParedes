@@ -9,7 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.endeavour.poloaquaticoparedes.*
 import com.endeavour.poloaquaticoparedes.model.ComplexAthlete
 import com.endeavour.poloaquaticoparedes.model.Leagues
@@ -34,8 +34,7 @@ class CreateAthleteFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, Injection.provideAthletesViewModelFactory(context!!))
-                .get(AthletesViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, Injection.provideAthletesViewModelFactory(context!!)).get(AthletesViewModel::class.java)
 
         cardId = arguments?.let {
             val safeArgs = CreateAthleteFragmentArgs.fromBundle(it)
@@ -43,6 +42,7 @@ class CreateAthleteFragment : Fragment() {
         } ?: ""
 
         if (cardId.isNotEmpty()) {
+            viewModel.updateAthlete(cardId)
 
             setupDeleteAthlete()
 
@@ -57,7 +57,7 @@ class CreateAthleteFragment : Fragment() {
 
         athlete_birthday.setOnClickListener {
 
-            createDatePicker(fragmentManager, it as TextView)
+            createDatePicker(fragmentManager!!, it as TextView)
         }
 
         create_athlete_btn.setOnClickListener {
@@ -80,13 +80,18 @@ class CreateAthleteFragment : Fragment() {
             athlete_birthday.text = formatDate(it.birthday)
 
             when (it.level) {
-                Leagues.MINIPOLO -> athlete_level_toggle.setToggled(R.id.toggle_mini_polo, true)
-                Leagues.SUB12 -> athlete_level_toggle.setToggled(R.id.toggle_sub12, true)
-                Leagues.INFANTIL_MALE -> athlete_level_toggle.setToggled(R.id.toggle_infantil, true)
-                Leagues.JUVENIL_MALE -> athlete_level_toggle.setToggled(R.id.toggle_juvenil, true)
-                Leagues.A18_MALE -> athlete_level_toggle.setToggled(R.id.toggle_a18, true)
-                Leagues.A20_MALE -> athlete_level_toggle.setToggled(R.id.toggle_a20, true)
-                Leagues.SENIOR_FEMALE -> athlete_level_toggle.setToggled(R.id.toggle_senior, true)
+                Leagues.MINIPOLO -> athlete_young_leagues_toggle.setToggled(R.id.toggle_mini_polo, true)
+                Leagues.SUB12 -> athlete_young_leagues_toggle.setToggled(R.id.toggle_sub12, true)
+                Leagues.INFANTIL_MALE -> athlete_young_leagues_toggle.setToggled(R.id.toggle_infantil, true)
+                Leagues.INFANTIL_FEMALE -> athlete_young_leagues_toggle.setToggled(R.id.toggle_infantil, true)
+                Leagues.JUVENIL_MALE -> athlete_young_leagues_toggle.setToggled(R.id.toggle_juvenil, true)
+                Leagues.JUVENIL_FEMALE -> athlete_young_leagues_toggle.setToggled(R.id.toggle_juvenil, true)
+                Leagues.A18_MALE -> athlete_older_leagues_toggle.setToggled(R.id.toggle_a18, true)
+                Leagues.A18_FEMALE -> athlete_older_leagues_toggle.setToggled(R.id.toggle_a18, true)
+                Leagues.A20_MALE -> athlete_older_leagues_toggle.setToggled(R.id.toggle_a20, true)
+                Leagues.A20_FEMALE -> athlete_older_leagues_toggle.setToggled(R.id.toggle_a20, true)
+                Leagues.SENIOR_MALE -> athlete_older_leagues_toggle.setToggled(R.id.toggle_senior, true)
+                Leagues.SENIOR_FEMALE -> athlete_older_leagues_toggle.setToggled(R.id.toggle_senior, true)
             }
 
             when (it.gender) {
@@ -96,7 +101,6 @@ class CreateAthleteFragment : Fragment() {
 
             athlete_email_edit.text = it.email.toEditable()
             athlete_mobile_number_edit.text = it.mobileNumber.toString().toEditable()
-
             athlete_observation_edit.text = it.observations.toEditable()
 
             if (it.parents.isNotEmpty()) {
@@ -129,7 +133,7 @@ class CreateAthleteFragment : Fragment() {
             if (it) {
                 val bundle = Bundle()
                 bundle.putString("cardId", cardId)
-                findNavController().navigate(R.id.createdAthlete, bundle)
+                findNavController(this).navigate(R.id.createdAthlete, bundle)
             } else {
                 Toast.makeText(context, getString(R.string.create_error), Toast.LENGTH_SHORT).show()
             }
@@ -144,7 +148,7 @@ class CreateAthleteFragment : Fragment() {
 
                 val bundle = Bundle()
                 bundle.putString("cardId", cardId)
-                findNavController().navigate(R.id.createdAthlete, bundle)
+                findNavController(this).navigate(R.id.createdAthlete, bundle)
             } else {
                 Toast.makeText(context, getString(R.string.edit_error), Toast.LENGTH_SHORT).show()
             }
@@ -157,7 +161,7 @@ class CreateAthleteFragment : Fragment() {
 
             if (it == true) {
 
-                findNavController().popBackStack(R.id.athletesFragment, false)
+                findNavController(this).popBackStack(R.id.athletesFragment, false)
             } else {
                 Toast.makeText(context, getString(R.string.delete_error), Toast.LENGTH_SHORT).show()
             }
@@ -168,7 +172,8 @@ class CreateAthleteFragment : Fragment() {
 
         return athlete_name_edit.isNotEmpty() &&
                 athlete_sex_toggle.isSelected(getString(R.string.athlete_toggle_sex_error)) &&
-                athlete_level_toggle.isSelected(getString(R.string.athlete_toggle_level_error)) &&
+                (athlete_young_leagues_toggle.isSelected(getString(R.string.athlete_toggle_level_error)) ||
+                        athlete_older_leagues_toggle.isSelected(getString(R.string.athlete_toggle_level_error)) ) &&
                 athlete_address_edit.isNotEmpty() &&
                 athlete_mobile_number_edit.isNotEmpty() &&
                 athlete_email_edit.isNotEmpty() &&
@@ -201,7 +206,7 @@ class CreateAthleteFragment : Fragment() {
                 athlete_email_edit.text.toString(),
                 cardId.toLong(),
                 "m",
-                Leagues.valueOf(athlete_level_toggle.selectedToggles()[0].title.toString().toUpperCase()),
+                getEventTargets(athlete_young_leagues_toggle, athlete_older_leagues_toggle, athlete_sex_toggle)[0],
                 athlete_observation_edit.text.toString(),
                 true,
                 true,

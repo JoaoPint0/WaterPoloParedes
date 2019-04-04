@@ -7,7 +7,6 @@ import android.content.SharedPreferences
 import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -15,6 +14,8 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.endeavour.poloaquaticoparedes.Injection.provideRepository
 import com.endeavour.poloaquaticoparedes.model.LoginUser
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.main_activity.*
 import java.util.*
 
@@ -24,19 +25,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sharedPref: SharedPreferences
     private lateinit var navigator: NavController
 
-    var eventDestination = ""
+    private var eventDestination = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.main_activity)
 
+        MobileAds.initialize(this, "ca-app-pub-9186906227587004~9493693287")
+
         NavigationUI.setupWithNavController(bottomNavigation, Navigation.findNavController(this, R.id.nav_host_fragment))
 
         eventDestination = intent.extras?.getString("destination") ?: ""
 
-        sharedPref = getSharedPreferences(
-                getString(R.string.shared_preferences), Context.MODE_PRIVATE)
+        sharedPref = getSharedPreferences(getString(R.string.shared_preferences), Context.MODE_PRIVATE)
 
         navigator = Navigation.findNavController(this, R.id.nav_host_fragment)
 
@@ -44,24 +46,17 @@ class MainActivity : AppCompatActivity() {
 
         navigator.addOnDestinationChangedListener { controller, destination, _ ->
 
-            Log.e("NavigationListener", "${destination.label}")
+            if (sharedPref.getString(getString(R.string.privileges), "") != "public" &&
+                (destination.id == R.id.mainFragment || destination.id == R.id.profileFragment || destination.id == R.id.athletesFragment)) {
 
-            if (destination.id == R.id.loginFragment ||
-                destination.id == R.id.createAthleteFragment ||
-                destination.id == R.id.createEventFragment ||
-                destination.id == R.id.createGameFragment) {
-
-                bottomNavigation.visibility = View.GONE
-            } else {
                 bottomNavigation.visibility = View.VISIBLE
+            } else {
+                bottomNavigation.visibility = View.GONE
             }
 
-            if (destination.id != R.id.loginFragment
-                    && (sharedPref.getString(getString(R.string.card_id), "").isNullOrEmpty()
-                            || sharedPref.getString(getString(R.string.privileges), "").isNullOrEmpty())) {
-
-                controller.navigate(R.id.loginFragment)
+            if (destination.id != R.id.loginFragment && sharedPref.getString(getString(R.string.privileges), "").isNullOrEmpty()) {
                 bottomNavigation.visibility = View.GONE
+                controller.navigate(R.id.loginFragment)
 
             } else if (eventDestination.isNotEmpty()) {
 
@@ -82,9 +77,11 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigation.menu.findItem(R.id.loginFragment).setOnMenuItemClickListener {
 
-            val logoutUser = LoginUser(sharedPref.getString(getString(R.string.card_id), "") ?: ""
-                    , sharedPref.getString(getString(R.string.card_id), "") ?: "",
-                    "")
+            val logoutUser = LoginUser(
+                sharedPref.getString(getString(R.string.card_id), "") ?: ""
+                , sharedPref.getString(getString(R.string.card_id), "") ?: "",
+                ""
+            )
 
             provideRepository(this).validateUser(logoutUser)
 
@@ -124,10 +121,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
 
-
-
-        if (sharedPref.getString(getString(R.string.card_id), "").isNullOrEmpty()
-                || sharedPref.getString(getString(R.string.privileges), "").isNullOrEmpty()) finish() else super.onBackPressed()
+        if (sharedPref.getString(getString(R.string.privileges), "").isNullOrEmpty()) {
+            finish()
+        } else if(sharedPref.getString(getString(R.string.privileges), "") == "public" && navigator.currentDestination?.label == "main_fragment"){
+            navigator.navigate(R.id.loginFragment)
+            sharedPref.edit().putString(getString(R.string.privileges), "").apply()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onStart() {
@@ -161,8 +162,6 @@ class MainActivity : AppCompatActivity() {
     private fun eventNewIntent() {
 
         val eventId = sharedPref.getLong(getString(R.string.event), 0)
-
-        Log.e("OnNewIntent", "eventId $eventId")
 
         if (eventId > 0) {
 

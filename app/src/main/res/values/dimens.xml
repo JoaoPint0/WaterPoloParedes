@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="max_width">-1.0px</dimen>
+    <dimen name="game_logo_small_size">32dp</dimen>
+    <dimen name="game_logo_size">64dp</dimen>
+    <dimen name="game_logo_big_size">80dp</dimen>
+    <dimen name="list_item_spacing">16dp</dimen>
+    <dimen name="list_item_spacing_half">8dp</dimen>
 </resources>

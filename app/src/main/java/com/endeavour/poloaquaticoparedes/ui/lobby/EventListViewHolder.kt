@@ -1,4 +1,4 @@
-package com.endeavour.poloaquaticoparedes.ui.event
+package com.endeavour.poloaquaticoparedes.ui.lobby
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,40 +6,32 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.endeavour.poloaquaticoparedes.R
-import com.endeavour.poloaquaticoparedes.formatDate
+import com.endeavour.poloaquaticoparedes.*
 import com.endeavour.poloaquaticoparedes.model.Event
 import kotlinx.android.synthetic.main.event_card_view_item.view.*
 import kotlinx.android.synthetic.main.payments_view_item.view.*
 
 class EventListViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bind(event: Event?) {
+    fun bind(event: Event?, listener: OnItemClickListener) {
         if (event == null) {
             val resources = itemView.resources
             view.payment_status.text = resources.getString(R.string.loading)
         } else {
             showRepoData(event)
+            view.setOnClickListener {
+                listener.onItemClick(it, event.id.toString())
+            }
         }
     }
 
     private fun showRepoData(event: Event) {
 
         view.event_name.text = event.name
-        if (event.date != null) view.event_date.text = formatDate(event.date)
+        view.event_date.text = formatDate(event.date)
+        view.event_league.text = getLeagueText(view.context, event.target[0])
 
-        Glide.with(view.context)
-                .load(event.picture)
-                .apply(RequestOptions().centerCrop())
-                .into(view.event_picture)
-
-        view.setOnClickListener {
-            val bundle =  Bundle()
-            bundle.putLong("id",event.id)
-            findNavController(it).navigate(R.id.eventDetailsFragment, bundle)
-        }
+        loadGlideImage(view.event_picture, event.picture)
     }
 
     companion object {

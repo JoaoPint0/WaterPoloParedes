@@ -145,6 +145,24 @@ class WaterPoloRepository(
         return if (query.isNotEmpty()) cache.eventsByName(query) else cache.allEvents()
     }
 
+    fun getEventById(id: Long): LiveData<Event> {
+
+        val event = MutableLiveData<Event>()
+
+        getEventById(service, id,{
+
+            if (it != null){
+
+                event.value = it
+                cache.insertEvents(listOf(it)) {}
+            }
+        },{
+            Log.e(TAG, "getEventById  $id  error $it")
+        })
+
+        return event
+    }
+
     fun createEvent(event: Event): LiveData<ApiResponse> {
 
         val success = MutableLiveData<ApiResponse>()
@@ -154,11 +172,11 @@ class WaterPoloRepository(
             success.value = it
             if (it?.success == true){
 
-                event.id = it.id
+                event.id = it.id.toLong()
                 cache.insertEvents(listOf(event)) {}
             }
         }, {
-            success.value = ApiResponse("", false, 0)
+            success.value = ApiResponse("", false, "0")
             Log.e(TAG, "create Event error $it")
         })
 
@@ -208,18 +226,24 @@ class WaterPoloRepository(
         return success
     }
 
-    fun createGame(game: Game): LiveData<ApiResponse> {
+    fun searchAllGames(): LiveData<List<Game>> {
 
-        val success = MutableLiveData<ApiResponse>()
-
-        return success
+        return CloudFireStore().getGames()
     }
 
-    fun editGame(game: Game): LiveData<Boolean> {
+    fun getGameById(id: String): LiveData<Game> {
 
-        val success = MutableLiveData<Boolean>()
+        return CloudFireStore().getGameById(id)
+    }
 
-        return success
+    fun createGame(game: Game): LiveData<ApiResponse> {
+
+        return CloudFireStore().addGame(game)
+    }
+
+    fun editGame(game: Game): LiveData<ApiResponse> {
+
+        return CloudFireStore().updateGame(game)
     }
 
     fun deleteGame(id: Long): LiveData<Boolean> {
@@ -245,24 +269,6 @@ class WaterPoloRepository(
         return success
     }
 
-    fun getEventById(id: Long): LiveData<Event> {
-
-        val event = MutableLiveData<Event>()
-
-        getEventById(service, id,{
-
-            if (it != null){
-
-                event.value = it
-                cache.insertEvents(listOf(it)) {}
-            }
-        },{
-            Log.e(TAG, "getEventById  $id  error $it")
-        })
-
-        return event
-    }
-
     fun validateUser(loginObject: LoginUser): LiveData<Boolean> {
 
         val success = MutableLiveData<Boolean>()
@@ -279,25 +285,6 @@ class WaterPoloRepository(
 
     fun getTeams(): LiveData<List<Team>> {
         val teams = MutableLiveData<List<Team>>()
-        val fake = arrayListOf<Team>()
-
-        fake.add(
-            Team("Paredes",
-            "SSCMP",
-            "",
-                emptyList(),
-                emptyList())
-        )
-
-        fake.add(
-            Team("Benfica",
-                "SLB",
-                "",
-                emptyList(),
-                emptyList())
-        )
-
-        teams.value = fake
 
         searchAllTeams(service, {
             Log.e(TAG, "search All Teams Success $it")
@@ -317,7 +304,7 @@ class WaterPoloRepository(
             Log.e(TAG, "create Team  $it")
             success.value = it
         }, {
-            success.value = ApiResponse("", false, 0)
+            success.value = ApiResponse("", false, "0")
             Log.e(TAG, "create Event error $it")
         })
         return success

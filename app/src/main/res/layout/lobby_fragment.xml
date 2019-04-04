@@ -1,49 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.event.lobby.LobbyFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="admin"
+                  type="Boolean"/>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        app:cardCornerRadius="8dp"
-        android:elevation="8dp">
+        <variable name="gamesExist"
+                  type="Boolean"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <variable name="eventsExist"
+                  type="Boolean"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:minHeight="120dp">
+            android:layout_height="match_parent">
 
-            <TextView
+        <androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+                                               android:layout_height="match_parent">
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="match_parent"
+                          android:orientation="vertical"
+                          tools:context=".ui.lobby.LobbyFragment">
+
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/games_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        app:goneUnless="@{gamesExist}"/>
+
+                    <TextView
+                            android:id="@+id/events_filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="24dp"
+                            android:drawablePadding="8dp"
+                            android:drawableEnd="@drawable/ic_filter_list"
+                            android:layout_gravity="end"
+                            android:text="Filter"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/events_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp"
+                            app:goneUnless="@{eventsExist}"/>
+
+                    <TextView
+                            android:id="@+id/loading_events"
+                            android:layout_width="match_parent"
+                            android:layout_height="240dp"
+                            android:gravity="center"
+                            android:text="@string/empty_list"
+                            android:textSize="14sp"
+                            app:goneUnless="@{!eventsExist}"/>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.gms.ads.doubleclick.PublisherAdView
+                android:id="@+id/ad_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="No match actively running"
+                android:layout_marginBottom="16dp"
+                app:adSize="SMART_BANNER"
+                app:adUnitId="ca-app-pub-9186906227587004/6941172822"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/create_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_waterpolo"
+                app:goneUnless="@{admin}"
+                app:layout_constraintBottom_toTopOf="@+id/create_event"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-    </androidx.cardview.widget.CardView>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/create_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_add"
+                app:goneUnless="@{admin}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/categories_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp" />
-
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

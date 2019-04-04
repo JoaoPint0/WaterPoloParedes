@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Polo Aquatico Paredes</string>
+    <string name="app_name">Polo Aquático Paredes</string>
 
     <string name="home_bottom_nav_item_title">Home</string>
     <string name="profile_bottom_nav_title">Perfil</string>
@@ -36,6 +36,7 @@
     <string name="create_event_content_title">Conteudo</string>
     <string name="content_hint">Conteudo</string>
     <string name="empty_list">Nenhum resultado encontrado</string>
+    <string name="no_games_found">Nenhum jogo encontrado</string>
     <string name="profile_observations">Observations</string>
     <string name="observations_hint">Observations</string>
     <string name="profile_payments">Payments</string>
@@ -69,4 +70,31 @@
     <string name="create_event">Criar Evento</string>
     <string name="create_athlete">Criar Atleta</string>
     <string name="add_new_payment_season">Adicionar Nova Época</string>
+
+    <string name="is_a_game_event">Evento Público?</string>
+    <string name="home_hint">Visitado</string>
+    <string name="away_hint">Visitante</string>
+    <string name="create_game_info_title">Informação do Jogo</string>
+    <string name="game_creation_new_team">Nova Equipa</string>
+    <string name="game_competition_hint">Competição</string>
+
+    <!--Create team-->
+    <string name="team_logo">Logo</string>
+    <string name="team_name">Nome</string>
+    <string name="team_acronym">Acrónimo</string>
+
+    <!--Game Type Events-->
+    <string name="goal">Golo</string>
+    <string name="timeout">Timeout</string>
+    <string name="exclusion">Expulsão</string>
+    <string name="yellow_card">Amarelo</string>
+    <string name="red_card">Vermelho</string>
+    <string name="penalty">Penalty</string>
+
+    <!--Member Types-->
+    <string name="player">Jogador</string>
+    <string name="coach">Treinador</string>
+    <string name="referee">Árbitro</string>
+    <string name="match_over">Fim do Jogo</string>
+    <string name="public_login"><u>Continuar sem conta</u></string>
 </resources>
