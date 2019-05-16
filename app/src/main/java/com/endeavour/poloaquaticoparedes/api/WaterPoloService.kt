@@ -21,178 +21,185 @@ import retrofit2.http.Path
 private const val TAG = "WaterPoloService"
 
 fun validateUser(
-        service: WaterPoloService,
-        login: LoginUser,
-        onSuccess: (success: ApiResponse?) -> Unit,
-        onError: (error: String) -> Unit) {
+    service: WaterPoloService,
+    login: LoginUser,
+    onSuccess: (success: ApiResponse?) -> Unit,
+    onError: (error: String) -> Unit
+) {
 
     service.validateAccount(login).enqueue(
-            object : Callback<ApiResponse> {
-                override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
-                    Log.d(TAG, "fail to get data")
-                    onError(t.message ?: "unknown error")
-                }
+        object : Callback<ApiResponse> {
+            override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
+                Log.d(TAG, "fail to get data")
+                onError(t.message ?: "unknown error")
+            }
 
-                override fun onResponse(
-                        call: Call<ApiResponse>?,
-                        response: Response<ApiResponse>
-                ) {
-                    Log.d(TAG, "got a response $response")
-                    if (response.isSuccessful) {
+            override fun onResponse(
+                call: Call<ApiResponse>?,
+                response: Response<ApiResponse>
+            ) {
+                Log.d(TAG, "got a response $response")
+                if (response.isSuccessful) {
 
-                        onSuccess(response.body())
-                    } else {
-                        onError(response.errorBody()?.string() ?: "Unknown error")
-                    }
+                    onSuccess(response.body())
+                } else {
+                    onError(response.errorBody()?.string() ?: "Unknown error")
                 }
             }
+        }
     )
 }
 
 fun searchAllAthletes(
-        service: WaterPoloService,
-        onSuccess: (athletes: List<Athlete>) -> Unit,
-        onError: (error: String) -> Unit) {
+    service: WaterPoloService,
+    onSuccess: (athletes: List<Athlete>) -> Unit,
+    onError: (error: String) -> Unit
+) {
 
     service.searchAllAthletes().enqueue(
-            object : Callback<List<Athlete>> {
-                override fun onFailure(call: Call<List<Athlete>>?, t: Throwable) {
-                    Log.d(TAG, "fail to get data")
-                    onError(t.message ?: "unknown error")
-                }
+        object : Callback<List<Athlete>> {
+            override fun onFailure(call: Call<List<Athlete>>?, t: Throwable) {
+                Log.d(TAG, "fail to get data")
+                onError(t.message ?: "unknown error")
+            }
 
-                override fun onResponse(
-                        call: Call<List<Athlete>>?,
-                        response: Response<List<Athlete>>
-                ) {
-                    Log.d(TAG, "got a response $response")
-                    if (response.isSuccessful) {
-                        val repos = response.body() ?: emptyList()
-                        onSuccess(repos)
-                    } else {
-                        onError(response.errorBody()?.string() ?: "Unknown error")
-                    }
+            override fun onResponse(
+                call: Call<List<Athlete>>?,
+                response: Response<List<Athlete>>
+            ) {
+                Log.d(TAG, "got a response $response")
+                if (response.isSuccessful) {
+                    val repos = response.body() ?: emptyList()
+                    onSuccess(repos)
+                } else {
+                    onError(response.errorBody()?.string() ?: "Unknown error")
                 }
             }
+        }
     )
 }
 
 fun searchAthleteByCardId(
-        service: WaterPoloService,
-        cardId: String,
-        onSuccess: (athlete: ComplexAthlete?) -> Unit,
-        onError: (error: String) -> Unit) {
+    service: WaterPoloService,
+    cardId: String,
+    onSuccess: (athlete: ComplexAthlete?) -> Unit,
+    onError: (error: String) -> Unit
+) {
 
     service.searchAthleteByCardId(cardId).enqueue(
-            object : Callback<ComplexAthlete> {
-                override fun onFailure(call: Call<ComplexAthlete>?, t: Throwable) {
-                    Log.d(TAG, "fail to get data")
-                    onError(t.message ?: "unknown error")
-                }
+        object : Callback<ComplexAthlete> {
+            override fun onFailure(call: Call<ComplexAthlete>?, t: Throwable) {
+                Log.d(TAG, "fail to get data")
+                onError(t.message ?: "unknown error")
+            }
 
-                override fun onResponse(
-                        call: Call<ComplexAthlete>?,
-                        response: Response<ComplexAthlete>
-                ) {
-                    Log.d(TAG, "got a response $response")
-                    if (response.isSuccessful) {
-                        val athlete = response.body()
-                        onSuccess(athlete)
-                    } else {
-                        onError(response.errorBody()?.string() ?: "Unknown error")
-                    }
+            override fun onResponse(
+                call: Call<ComplexAthlete>?,
+                response: Response<ComplexAthlete>
+            ) {
+                Log.d(TAG, "got a response $response")
+                if (response.isSuccessful) {
+                    val athlete = response.body()
+                    onSuccess(athlete)
+                } else {
+                    onError(response.errorBody()?.string() ?: "Unknown error")
                 }
             }
+        }
     )
 }
 
 fun createAthlete(
-        service: WaterPoloService,
-        newAthlete: ComplexAthlete,
-        onSuccess: (response: ApiResponse?) -> Unit,
-        onError: (error: String) -> Unit) {
+    service: WaterPoloService,
+    newAthlete: ComplexAthlete,
+    onSuccess: (response: ApiResponse?) -> Unit,
+    onError: (error: String) -> Unit
+) {
 
     service.createAthlete(newAthlete).enqueue(
-            object : Callback<ApiResponse> {
-                override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
-                    onError(t.message ?: "createAccount failure error")
-                }
+        object : Callback<ApiResponse> {
+            override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
+                onError(t.message ?: "createAccount failure error")
+            }
 
-                override fun onResponse(
-                        call: Call<ApiResponse>?,
-                        response: Response<ApiResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val success = response.body()
-                        onSuccess(success)
-                    } else {
-                        onError(response.errorBody()?.string() ?: "Unknown error")
-                    }
+            override fun onResponse(
+                call: Call<ApiResponse>?,
+                response: Response<ApiResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val success = response.body()
+                    onSuccess(success)
+                } else {
+                    onError(response.errorBody()?.string() ?: "Unknown error")
                 }
             }
+        }
     )
 }
 
 fun updateAthlete(
-        service: WaterPoloService,
-        updatedAthlete: ComplexAthlete,
-        onSuccess: (response: ApiResponse?) -> Unit,
-        onError: (error: String) -> Unit) {
+    service: WaterPoloService,
+    updatedAthlete: ComplexAthlete,
+    onSuccess: (response: ApiResponse?) -> Unit,
+    onError: (error: String) -> Unit
+) {
 
     service.updateAthlete(updatedAthlete).enqueue(
-            object : Callback<ApiResponse> {
-                override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
-                    onError(t.message ?: "createAccount failure error")
-                }
+        object : Callback<ApiResponse> {
+            override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
+                onError(t.message ?: "createAccount failure error")
+            }
 
-                override fun onResponse(
-                        call: Call<ApiResponse>?,
-                        response: Response<ApiResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val success = response.body()
-                        onSuccess(success)
-                    } else {
-                        onError(response.errorBody()?.string() ?: "Unknown error")
-                    }
+            override fun onResponse(
+                call: Call<ApiResponse>?,
+                response: Response<ApiResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val success = response.body()
+                    onSuccess(success)
+                } else {
+                    onError(response.errorBody()?.string() ?: "Unknown error")
                 }
             }
+        }
     )
 }
 
 fun deleteAthlete(
-        service: WaterPoloService,
-        cardId: String,
-        onSuccess: (response: ApiResponse?) -> Unit,
-        onError: (error: String) -> Unit) {
+    service: WaterPoloService,
+    cardId: String,
+    onSuccess: (response: ApiResponse?) -> Unit,
+    onError: (error: String) -> Unit
+) {
 
     service.deleteAthlete(cardId).enqueue(
-            object : Callback<ApiResponse> {
-                override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
-                    onError(t.message ?: "createAccount failure error")
-                }
+        object : Callback<ApiResponse> {
+            override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
+                onError(t.message ?: "createAccount failure error")
+            }
 
-                override fun onResponse(
-                        call: Call<ApiResponse>?,
-                        response: Response<ApiResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val success = response.body()
-                        onSuccess(success)
-                    } else {
-                        onError(response.errorBody()?.string() ?: "Unknown error")
-                    }
+            override fun onResponse(
+                call: Call<ApiResponse>?,
+                response: Response<ApiResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val success = response.body()
+                    onSuccess(success)
+                } else {
+                    onError(response.errorBody()?.string() ?: "Unknown error")
                 }
             }
+        }
     )
 }
 
 fun searchAthletePaymentBySeason(
-        service: WaterPoloService,
-        cardId: Long,
-        year: Int,
-        onSuccess: (payments: List<Payment>) -> Unit,
-        onError: (error: String) -> Unit) {
+    service: WaterPoloService,
+    cardId: Long,
+    year: Int,
+    onSuccess: (payments: List<Payment>) -> Unit,
+    onError: (error: String) -> Unit
+) {
 
     service.searchAthletePaymentBySeason(cardId, year).enqueue(
         object : Callback<PaymentsResponse> {
@@ -202,8 +209,8 @@ fun searchAthletePaymentBySeason(
             }
 
             override fun onResponse(
-                    call: Call<PaymentsResponse>?,
-                    response: Response<PaymentsResponse>
+                call: Call<PaymentsResponse>?,
+                response: Response<PaymentsResponse>
             ) {
                 Log.d(TAG, "got a response $response")
                 if (response.isSuccessful) {
@@ -218,10 +225,11 @@ fun searchAthletePaymentBySeason(
 }
 
 fun createAthletePayments(
-        service: WaterPoloService,
-        payments: CreatePayment,
-        onSuccess: (response: ApiResponse?) -> Unit,
-        onError: (error: String) -> Unit) {
+    service: WaterPoloService,
+    payments: CreatePayment,
+    onSuccess: (response: ApiResponse?) -> Unit,
+    onError: (error: String) -> Unit
+) {
 
     service.createAthletePayments(payments).enqueue(
         object : Callback<ApiResponse> {
@@ -230,8 +238,8 @@ fun createAthletePayments(
             }
 
             override fun onResponse(
-                    call: Call<ApiResponse>?,
-                    response: Response<ApiResponse>
+                call: Call<ApiResponse>?,
+                response: Response<ApiResponse>
             ) {
                 if (response.isSuccessful) {
                     val success = response.body()
@@ -244,278 +252,254 @@ fun createAthletePayments(
     )
 }
 
-fun searchAllEvents(
-        service: WaterPoloService,
-        onSuccess: (events: List<Event>) -> Unit,
-        onError: (error: String) -> Unit) {
+fun searchAllEvents(service: WaterPoloService, onSuccess: (events: List<Event>) -> Unit, onError: (error: String) -> Unit) {
 
     service.searchAllEvents().enqueue(
-            object : Callback<List<Event>> {
-                override fun onFailure(call: Call<List<Event>>?, t: Throwable) {
-                    Log.d(TAG, "fail to get data")
-                    onError(t.message ?: "unknown error")
-                }
+        object : Callback<List<Event>> {
+            override fun onFailure(call: Call<List<Event>>?, t: Throwable) {
+                onError(t.message ?: "searchAllEvents failure error")
+            }
 
-                override fun onResponse(
-                        call: Call<List<Event>>?,
-                        response: Response<List<Event>>
-                ) {
-                    Log.d(TAG, "got a response $response")
-                    if (response.isSuccessful) {
-                        val events = response.body() ?: emptyList()
-                        onSuccess(events)
-                    } else {
-                        onError(response.errorBody()?.string() ?: "Unknown error")
-                    }
+            override fun onResponse(call: Call<List<Event>>?, response: Response<List<Event>>) {
+                Log.d(TAG, "searchAllEvents got a response $response")
+                if (response.isSuccessful) {
+                    val events = response.body() ?: emptyList()
+                    onSuccess(events)
+                } else {
+                    onError(response.errorBody()?.string() ?: "searchAllEvents unknown error")
                 }
             }
+        }
     )
 }
 
-fun getEventById(
-        service: WaterPoloService,
-        id: Long,
-        onSuccess: (event: Event?) -> Unit,
-        onError: (error: String) -> Unit) {
+fun getEventById(service: WaterPoloService, id: Long, onSuccess: (event: Event?) -> Unit, onError: (error: String) -> Unit) {
 
     service.getEventById(id).enqueue(
-            object : Callback<Event> {
-                override fun onFailure(call: Call<Event>?, t: Throwable) {
-                    Log.d(TAG, "fail to get data")
-                    onError(t.message ?: "unknown error")
-                }
+        object : Callback<Event> {
+            override fun onFailure(call: Call<Event>?, t: Throwable) {
+                onError(t.message ?: "getEventById failure error")
+            }
 
-                override fun onResponse(
-                        call: Call<Event>?,
-                        response: Response<Event>
-                ) {
-                    Log.d(TAG, "got a response $response")
-                    if (response.isSuccessful) {
-                        val event = response.body()
-                        onSuccess(event)
-                    } else {
-                        onError(response.errorBody()?.string() ?: "Unknown error")
-                    }
+            override fun onResponse(call: Call<Event>?, response: Response<Event>) {
+                Log.d(TAG, "getEventById got a response $response")
+                if (response.isSuccessful) {
+                    val event = response.body()
+                    onSuccess(event)
+                } else {
+                    onError(response.errorBody()?.string() ?: "getEventById unknown error")
                 }
             }
+        }
     )
 }
 
-fun createEvent(
-        service: WaterPoloService,
-        newEvent: Event,
-        onSuccess: (response: ApiResponse?) -> Unit,
-        onError: (error: String) -> Unit) {
+fun createEvent(service: WaterPoloService, newEvent: Event, onSuccess: (response: ApiResponse?) -> Unit, onError: (error: String) -> Unit) {
 
     service.createEvent(newEvent).enqueue(
-            object : Callback<ApiResponse> {
-                override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
-                    onError(t.message ?: "createAccount failure error")
-                }
+        object : Callback<ApiResponse> {
+            override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
+                onError(t.message ?: "createEvent failure error")
+            }
 
-                override fun onResponse(
-                        call: Call<ApiResponse>?,
-                        response: Response<ApiResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val success = response.body()
-                        onSuccess(success)
-                    } else {
-                        onError(response.errorBody()?.string() ?: "Unknown error")
-                    }
+            override fun onResponse(call: Call<ApiResponse>?, response: Response<ApiResponse>) {
+                Log.d(TAG, "createEvent got a response $response")
+                if (response.isSuccessful) {
+                    val success = response.body()
+                    onSuccess(success)
+                } else {
+                    onError(response.errorBody()?.string() ?: "createEvent unknown error")
                 }
             }
+        }
     )
 }
 
-fun editEvent(
-        service: WaterPoloService,
-        updatedEvent: Event,
-        onSuccess: (response: ApiResponse?) -> Unit,
-        onError: (error: String) -> Unit) {
+fun editEvent(service: WaterPoloService, updatedEvent: Event, onSuccess: (response: ApiResponse?) -> Unit, onError: (error: String) -> Unit) {
 
-    service.editEvent( updatedEvent).enqueue(
-            object : Callback<ApiResponse> {
-                override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
-                    onError(t.message ?: "createAccount failure error")
-                }
+    service.editEvent(updatedEvent).enqueue(
+        object : Callback<ApiResponse> {
+            override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
+                onError(t.message ?: "editEvent failure error")
+            }
 
-                override fun onResponse(
-                        call: Call<ApiResponse>?,
-                        response: Response<ApiResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val success = response.body()
-                        onSuccess(success)
-                    } else {
-                        onError(response.errorBody()?.string() ?: "Unknown error")
-                    }
+            override fun onResponse(call: Call<ApiResponse>?, response: Response<ApiResponse>) {
+                Log.d(TAG, "editEvent got a response $response")
+                if (response.isSuccessful) {
+                    val success = response.body()
+                    onSuccess(success)
+                } else {
+                    onError(response.errorBody()?.string() ?: "editEvent Unknown error")
                 }
             }
+        }
     )
 }
 
 
-fun deleteEvent(
-        service: WaterPoloService,
-        id: Long,
-        onSuccess: (response: ApiResponse?) -> Unit,
-        onError: (error: String) -> Unit) {
+fun deleteEvent(service: WaterPoloService, id: Long, onSuccess: (response: ApiResponse?) -> Unit, onError: (error: String) -> Unit) {
 
     service.deleteEvent(id).enqueue(
-            object : Callback<ApiResponse> {
-                override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
-                    onError(t.message ?: "createAccount failure error")
-                }
+        object : Callback<ApiResponse> {
+            override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
+                onError(t.message ?: "deleteEvent failure error")
+            }
 
-                override fun onResponse(
-                        call: Call<ApiResponse>?,
-                        response: Response<ApiResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val success = response.body()
-                        onSuccess(success)
-                    } else {
-                        onError(response.errorBody()?.string() ?: "Unknown error")
-                    }
+            override fun onResponse(call: Call<ApiResponse>?, response: Response<ApiResponse>) {
+                Log.d(TAG, "deleteEvent got a response $response")
+                if (response.isSuccessful) {
+                    val success = response.body()
+                    onSuccess(success)
+                } else {
+                    onError(response.errorBody()?.string() ?: "deleteEvent unknown error")
                 }
             }
+        }
     )
 }
 
-fun searchAllTeams(
-    service: WaterPoloService,
-    onSuccess: (teams: List<Team>) -> Unit,
-    onError: (error: String) -> Unit) {
+fun searchAllTeams(service: WaterPoloService, onSuccess: (teams: List<Team>) -> Unit, onError: (error: String) -> Unit) {
 
     service.searchAllTeams().enqueue(
         object : Callback<List<Team>> {
             override fun onFailure(call: Call<List<Team>>?, t: Throwable) {
-                Log.d(TAG, "fail to get data")
-                onError(t.message ?: "unknown error")
+                onError(t.message ?: "searchAllTeams failure error")
             }
 
-            override fun onResponse(
-                call: Call<List<Team>>?,
-                response: Response<List<Team>>
-            ) {
-                Log.d(TAG, "got a response $response")
+            override fun onResponse(call: Call<List<Team>>?, response: Response<List<Team>>) {
+                Log.d(TAG, "searchAllTeams got a response $response")
                 if (response.isSuccessful) {
                     val teams = response.body() ?: emptyList()
                     onSuccess(teams)
                 } else {
-                    onError(response.errorBody()?.string() ?: "Unknown error")
+                    onError(response.errorBody()?.string() ?: "searchAllTeams unknown error")
                 }
             }
         }
     )
 }
 
-fun createTeam(
-    service: WaterPoloService,
-    newTeam: Team,
-    onSuccess: (response: ApiResponse?) -> Unit,
-    onError: (error: String) -> Unit) {
+fun createTeam(service: WaterPoloService, newTeam: Team, onSuccess: (response: ApiResponse?) -> Unit, onError: (error: String) -> Unit) {
 
     service.createTeam(newTeam).enqueue(
         object : Callback<ApiResponse> {
             override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
-                onError(t.message ?: "createAccount failure error")
+                onError(t.message ?: "createTeam failure error")
             }
 
-            override fun onResponse(
-                call: Call<ApiResponse>?,
-                response: Response<ApiResponse>
-            ) {
+            override fun onResponse(call: Call<ApiResponse>?, response: Response<ApiResponse>) {
+                Log.d(TAG, "createTeam got a response $response")
                 if (response.isSuccessful) {
                     val success = response.body()
                     onSuccess(success)
                 } else {
-                    onError(response.errorBody()?.string() ?: "Unknown error")
+                    onError(response.errorBody()?.string() ?: "createTeam unknown error")
                 }
             }
         }
     )
 }
 
-fun searchAllGames(
-    service: WaterPoloService,
-    onSuccess: (games: List<Game>) -> Unit,
-    onError: (error: String) -> Unit) {
+fun searchAllGames(service: WaterPoloService, onSuccess: (games: List<Game>) -> Unit, onError: (error: String) -> Unit) {
 
     service.searchAllGames().enqueue(
         object : Callback<List<Game>> {
             override fun onFailure(call: Call<List<Game>>?, t: Throwable) {
-                Log.d(TAG, "fail to get data")
-                onError(t.message ?: "unknown error")
+                onError(t.message ?: "searchAllGames failure error")
             }
 
-            override fun onResponse(
-                call: Call<List<Game>>?,
-                response: Response<List<Game>>
-            ) {
-                Log.d(TAG, "got a response $response")
+            override fun onResponse(call: Call<List<Game>>?, response: Response<List<Game>>) {
+                Log.d(TAG, "searchAllGames got a response $response")
                 if (response.isSuccessful) {
                     val games = response.body() ?: emptyList()
                     onSuccess(games)
                 } else {
-                    onError(response.errorBody()?.string() ?: "Unknown error")
+                    onError(response.errorBody()?.string() ?: "searchAllGames unkown error")
                 }
             }
         }
     )
 }
 
-fun getGameById(
-    service: WaterPoloService,
-    id: Long,
-    onSuccess: (game: Game?) -> Unit,
-    onError: (error: String) -> Unit) {
+fun getGameById(service: WaterPoloService, id: Long, onSuccess: (game: Game?) -> Unit, onError: (error: String) -> Unit) {
 
     service.getGameById(id).enqueue(
         object : Callback<Game> {
             override fun onFailure(call: Call<Game>?, t: Throwable) {
-                Log.d(TAG, "fail to get data")
-                onError(t.message ?: "unknown error")
+                onError(t.message ?: "getGameById failure error")
             }
 
-            override fun onResponse(
-                call: Call<Game>?,
-                response: Response<Game>
-            ) {
-                Log.d(TAG, "got a response $response")
+            override fun onResponse(call: Call<Game>?, response: Response<Game>) {
+                Log.d(TAG, "getGameById got a response $response")
                 if (response.isSuccessful) {
                     val game = response.body()
                     onSuccess(game)
                 } else {
-                    onError(response.errorBody()?.string() ?: "Unknown error")
+                    onError(response.errorBody()?.string() ?: "getGameById unknown error")
                 }
             }
         }
     )
 }
 
-fun createGame(
-    service: WaterPoloService,
-    newGame: Game,
-    onSuccess: (response: ApiResponse?) -> Unit,
-    onError: (error: String) -> Unit) {
+fun createGame(service: WaterPoloService,newGame: Game, onSuccess: (response: ApiResponse?) -> Unit, onError: (error: String) -> Unit) {
 
     service.createGame(newGame).enqueue(
         object : Callback<ApiResponse> {
             override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
-                onError(t.message ?: "createAccount failure error")
+                onError(t.message ?: "createGame failure error")
             }
 
-            override fun onResponse(
-                call: Call<ApiResponse>?,
-                response: Response<ApiResponse>
-            ) {
+            override fun onResponse(call: Call<ApiResponse>?, response: Response<ApiResponse>) {
+                Log.d(TAG, "createGame got a response $response")
                 if (response.isSuccessful) {
                     val success = response.body()
                     onSuccess(success)
                 } else {
-                    onError(response.errorBody()?.string() ?: "Unknown error")
+                    onError(response.errorBody()?.string() ?: "createGame unknown error")
+                }
+            }
+        }
+    )
+}
+
+fun editGame(service: WaterPoloService, updatedGame: Game, onSuccess: (response: ApiResponse?) -> Unit, onError: (error: String) -> Unit) {
+
+    service.editGame(updatedGame).enqueue(
+        object : Callback<ApiResponse> {
+            override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
+                onError(t.message ?: "editGame failure error")
+            }
+
+            override fun onResponse(call: Call<ApiResponse>?, response: Response<ApiResponse>) {
+                Log.d(TAG, "editGame got a response $response")
+                if (response.isSuccessful) {
+                    val success = response.body()
+                    onSuccess(success)
+                } else {
+                    onError(response.errorBody()?.string() ?: "editGame unknown error")
+                }
+            }
+        }
+    )
+}
+
+
+fun deleteGame(service: WaterPoloService, id: Long, onSuccess: (response: ApiResponse?) -> Unit, onError: (error: String) -> Unit) {
+
+    service.deleteGame(id).enqueue(
+        object : Callback<ApiResponse> {
+            override fun onFailure(call: Call<ApiResponse>?, t: Throwable) {
+                onError(t.message ?: "deleteGame failure error")
+            }
+
+            override fun onResponse(call: Call<ApiResponse>?, response: Response<ApiResponse>) {
+                Log.d(TAG, "deleteGame got a response $response")
+                if (response.isSuccessful) {
+                    val success = response.body()
+                    onSuccess(success)
+                } else {
+                    onError(response.errorBody()?.string() ?: "deleteGame unknown error")
                 }
             }
         }
@@ -575,8 +559,14 @@ interface WaterPoloService {
     @GET("game/{id}")
     fun getGameById(@Path("id") id: Long): Call<Game>
 
-    @POST("team/create")
+    @POST("game/create")
     fun createGame(@Body game: Game): Call<ApiResponse>
+
+    @POST("game/update")
+    fun editGame(@Body game: Game): Call<ApiResponse>
+
+    @POST("game/delete/{id}")
+    fun deleteGame(@Path("id") id: Long): Call<ApiResponse>
 
     companion object {
         private var BASE_URL = ""
@@ -589,19 +579,19 @@ interface WaterPoloService {
             logger.level = HttpLoggingInterceptor.Level.BASIC
 
             val client = OkHttpClient.Builder()
-                    .addInterceptor(logger)
-                    .build()
+                .addInterceptor(logger)
+                .build()
 
             val gson = GsonBuilder()
-                    .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-                    .create()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                .create()
 
             return Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .client(client)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .build()
-                    .create(WaterPoloService::class.java)
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build()
+                .create(WaterPoloService::class.java)
         }
     }
 }

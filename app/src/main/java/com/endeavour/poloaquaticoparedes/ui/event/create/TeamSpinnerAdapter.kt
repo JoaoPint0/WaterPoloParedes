@@ -12,12 +12,14 @@ import kotlinx.android.synthetic.main.team_view_item.view.*
 
 class TeamSpinnerAdapter(context: Context, @LayoutRes private val layoutResource: Int): ArrayAdapter<Team>(context, layoutResource) {
 
-    private var teams: List<Team> = emptyList()
+    private var teams: MutableList<Team> = mutableListOf()
 
     fun setTeams(list: List<Team>){
+
+        teams.clear()
+        teams.addAll(list)
         clear()
-        teams = list
-        addAll(list)
+        addAll(teams)
         notifyDataSetChanged()
     }
 

@@ -140,7 +140,8 @@
             android:label="game_details_fragment"
             tools:layout="@layout/game_details_fragment_end">
 
-        <argument android:name="id"/>
+        <argument android:name="id"
+                  app:argType="long"/>
 
     </fragment>
 

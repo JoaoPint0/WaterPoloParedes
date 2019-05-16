@@ -29,25 +29,25 @@ import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd
 class LobbyFragment : Fragment() {
 
     private val eventAdapter = EventListAdapter(object : OnItemClickListener{
-        override fun onItemClick(view: View, id: String) {
+        override fun onItemClick(view: View, id: Long) {
             loadFullScreenAdd()
             val bundle =  Bundle()
-            bundle.putLong("id",id.toLong())
+            bundle.putLong("id",id)
             findNavController(view).navigate(R.id.eventDetailsFragment, bundle)
         }
     })
     private val gamesAdapter = GamesListAdapter(object : OnItemClickListener{
-        override fun onItemClick(view: View, id: String) {
+        override fun onItemClick(view: View, id: Long) {
             loadFullScreenAdd()
             val bundle =  Bundle()
-            bundle.putString("id",id)
+            bundle.putLong("id",id)
             findNavController(view).navigate(R.id.viewGame, bundle, null, null)
         }
     })
     private lateinit var binding: LobbyFragmentBinding
     private val sharedPref by lazy { context!!.getSharedPreferences(getString(R.string.shared_preferences), Context.MODE_PRIVATE) }
     private val viewModel by lazy {
-        ViewModelProviders.of(this, Injection.provideGameViewModelFactory(context!!)).get(
+        ViewModelProviders.of(activity!!, Injection.provideGameViewModelFactory(context!!)).get(
             GameViewModel::class.java
         )
     }
@@ -68,7 +68,7 @@ class LobbyFragment : Fragment() {
 
         binding.admin = sharedPref.getString(getString(R.string.privileges), "") == "admin"
 
-        if(sharedPref.getString(getString(R.string.privileges), "") == "public") {
+        if(sharedPref.getString(getString(R.string.privileges), "") != "admin") {
             val adRequest = PublisherAdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build()
@@ -144,7 +144,7 @@ class LobbyFragment : Fragment() {
     }
 
     private fun loadFullScreenAdd(){
-        if(sharedPref.getString(getString(R.string.privileges), "") == "public" && interstitialAd.isLoaded &&  showFullScreenAdd()) {
+        if(sharedPref.getString("privileges", "") != "admin" &&  showFullScreenAdd()) {
             interstitialAd.show()
             interstitialAd.adListener = object : AdListener() {
                 override fun onAdClosed() {

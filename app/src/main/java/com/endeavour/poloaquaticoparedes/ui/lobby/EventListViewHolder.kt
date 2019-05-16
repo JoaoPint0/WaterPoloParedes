@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.endeavour.poloaquaticoparedes.*
 import com.endeavour.poloaquaticoparedes.model.Event
 import kotlinx.android.synthetic.main.event_card_view_item.view.*
@@ -20,7 +21,7 @@ class EventListViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         } else {
             showRepoData(event)
             view.setOnClickListener {
-                listener.onItemClick(it, event.id.toString())
+                listener.onItemClick(it, event.id)
             }
         }
     }
@@ -31,7 +32,10 @@ class EventListViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         view.event_date.text = formatDate(event.date)
         view.event_league.text = getLeagueText(view.context, event.target[0])
 
-        loadGlideImage(view.event_picture, event.picture)
+        Glide.with(view)
+            .load(if (event.picture.isNullOrBlank()) R.drawable.paredes_logo else event.picture)
+            .centerCrop()
+            .into(view.event_picture)
     }
 
     companion object {

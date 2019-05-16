@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         navigator.addOnDestinationChangedListener { controller, destination, _ ->
 
             if (sharedPref.getString(getString(R.string.privileges), "") != "public" &&
-                (destination.id == R.id.mainFragment || destination.id == R.id.profileFragment || destination.id == R.id.athletesFragment)) {
+                (destination.id == R.id.mainFragment || destination.id == R.id.athletesFragment)) {
 
                 bottomNavigation.visibility = View.VISIBLE
             } else {

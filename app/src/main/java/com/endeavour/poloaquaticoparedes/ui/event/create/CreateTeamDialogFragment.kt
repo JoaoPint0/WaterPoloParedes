@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
 import com.endeavour.poloaquaticoparedes.Injection
 import com.endeavour.poloaquaticoparedes.R
 import com.endeavour.poloaquaticoparedes.isNotEmpty
@@ -28,7 +29,11 @@ class CreateTeamDialogFragment : DialogFragment() {
 
         view.team_logo_edit.addTextChangedListener(object:TextWatcher{
             override fun afterTextChanged(s: Editable?) {
-                loadGlideImage(view.dialog_team_logo, s.toString())
+
+                Glide.with(view)
+                    .load(if (s.isNullOrBlank()) R.drawable.paredes_logo else s.toString())
+                    .override(80,80)
+                    .into(view.dialog_team_logo)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -60,8 +65,6 @@ class CreateTeamDialogFragment : DialogFragment() {
     private fun getTeam(): Team {
         return Team(team_name_edit.text.toString(),
             team_acronym_edit.text.toString(),
-            team_logo_edit.text.toString(),
-            mutableListOf(),
-            mutableListOf())
+            team_logo_edit.text.toString())
     }
 }

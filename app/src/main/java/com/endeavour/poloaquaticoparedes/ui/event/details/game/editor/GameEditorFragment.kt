@@ -1,24 +1,23 @@
 package com.endeavour.poloaquaticoparedes.ui.event.details.game.editor
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.CountDownTimer
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.widget.AppCompatSpinner
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.endeavour.poloaquaticoparedes.R
+import com.endeavour.poloaquaticoparedes.formatCounter
+import com.endeavour.poloaquaticoparedes.model.*
 import com.endeavour.poloaquaticoparedes.ui.event.GameViewModel
 import com.endeavour.poloaquaticoparedes.ui.event.create.TeamSpinnerAdapter
 import com.endeavour.poloaquaticoparedes.ui.event.details.GameDetailsFragmentArgs
 import kotlinx.android.synthetic.main.game_editor_fragment.*
-import android.widget.AdapterView.OnItemSelectedListener
-import android.widget.Toast
-import androidx.lifecycle.Observer
-import com.endeavour.poloaquaticoparedes.formatCounter
-import com.endeavour.poloaquaticoparedes.model.*
 
 
 class GameEditorFragment : Fragment() {
@@ -29,9 +28,9 @@ class GameEditorFragment : Fragment() {
     private lateinit var game: Game
 
     companion object {
-        fun newInstance(id: String): GameEditorFragment {
+        fun newInstance(id: Long): GameEditorFragment {
             val args = Bundle()
-            args.putString("id", id)
+            args.putLong("id", id)
             val fragment = GameEditorFragment()
             fragment.arguments = args
             return fragment
@@ -58,27 +57,28 @@ class GameEditorFragment : Fragment() {
         val id = arguments?.let {
             val safeArgs = GameDetailsFragmentArgs.fromBundle(it)
             safeArgs.id
-        } ?: "0"
+        } ?: 0L
 
-        viewModel.getGameById(id).observe(this, androidx.lifecycle.Observer {
+        viewModel.gameById(id).observe(this, androidx.lifecycle.Observer {
 
-            memberAdapter.setTeams(listOf(it.home, it.away))
-            activityAdapter.setTeams(listOf(it.home, it.away))
-
-            if(counter == null){
-                time = it.time
-                round = it.round
-                setTimerCount()
-            }
+            if(it == null) return@Observer
 
             game = it
-            game.id = id
+
+            memberAdapter.setTeams(listOf(game.homeTeam, game.awayTeam))
+            activityAdapter.setTeams(listOf(game.homeTeam, game.awayTeam))
+
+            if (counter == null) {
+                time = game.time
+                round = game.round
+                setTimerCount()
+            }
         })
 
         member_team.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 member_number.text =
-                    if (position == 0) "${game.home.players.size + 1}" else "${game.away.players.size + 1}"
+                    if (position == 0) "${game.participants.homeTeamPlayerList.size + 1}" else "${game.participants.awayTeamPlayerList.size + 1}"
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -101,9 +101,9 @@ class GameEditorFragment : Fragment() {
         activity_team.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position == 0) {
-                    setupSpinner(activity_player, game.home.players)
+                    setupSpinner(activity_player, game.participants.homeTeamPlayerList)
                 } else {
-                    setupSpinner(activity_player, game.away.players)
+                    setupSpinner(activity_player, game.participants.awayTeamPlayerList)
                 }
             }
 
@@ -167,20 +167,28 @@ class GameEditorFragment : Fragment() {
 
             when (memberType) {
                 MemberType.PLAYER -> {
-                    if (member_team.selectedItemPosition == 0) addPlayer(game.home, name) else addPlayer(game.away, name)
+                    if (member_team.selectedItemPosition == 0) {
+                        addPlayer(game.participants.homeTeamPlayerList, name, game.homeTeam.name)
+                    } else {
+                        addPlayer(game.participants.awayTeamPlayerList, name, game.awayTeam.name)
+                    }
                 }
                 MemberType.COACH -> {
-                    if (member_team.selectedItemPosition == 0) addCoach(game.home, name) else addCoach(game.away, name)
+                    if (member_team.selectedItemPosition == 0) {
+                        addCoach(game.participants.homeTeamCoachList, name, game.homeTeam.name)
+                    } else {
+                        addCoach(game.participants.awayTeamCoachList, name, game.awayTeam.name)
+                    }
                 }
                 MemberType.REFEREE -> {
-                    game.referees.add(name)
+                    game.participants.refereeList.add(GamePerson(0L, name, 0, MemberType.REFEREE, ""))
                 }
             }
 
             viewModel.editGame(game).observe(this, Observer {
                 if (it.success) {
                     member_name_edit.text?.clear()
-                    member_number.text = if (member_team.selectedItemPosition == 0) "${game.home.players.size + 1}" else "${game.away.players.size + 1}"
+                    member_number.text = if (member_team.selectedItemPosition == 0) "${game.participants.homeTeamPlayerList.size + 1}" else "${game.participants.awayTeamPlayerList.size + 1}"
                 }
             })
         }
@@ -188,31 +196,32 @@ class GameEditorFragment : Fragment() {
         create_activity_btn.setOnClickListener {
 
             val gameType = GameEventType.values()[activity_type.selectedItemPosition]
-            game.activity.add(GameEvent(gameType, activity_team.selectedItemPosition, activity_player.selectedItem as String,round, time))
+            game.activity.add(GameEvent(gameType, activity_team.selectedItemPosition, activity_player.selectedItem as String, round, time))
             viewModel.editGame(game)
         }
     }
 
     override fun onStart() {
-        if(::game.isInitialized) {
-            memberAdapter.setTeams(listOf(game.home, game.away))
-            activityAdapter.setTeams(listOf(game.home, game.away))
+        if (::game.isInitialized) {
+            memberAdapter.setTeams(listOf(game.homeTeam, game.awayTeam))
+            activityAdapter.setTeams(listOf(game.homeTeam, game.awayTeam))
         }
         super.onStart()
     }
-    private fun addPlayer(team: Team, name: String) {
-        team.players.add(name)
+
+    private fun addPlayer(players: MutableList<GamePerson>, name: String, team: String) {
+        players.add(GamePerson(0L, name, players.size + 1, MemberType.PLAYER, team))
     }
 
-    private fun addCoach(team: Team, name: String) {
-        team.coaches.add(name)
+    private fun addCoach(coaches: MutableList<GamePerson>, name: String, team: String) {
+        coaches.add(GamePerson(0L, name, 0, MemberType.COACH, team))
     }
 
     private fun setTimerCount() {
         timer_count.text = formatCounter(time)
         round_count.text = round.toString()
 
-        if(::game.isInitialized) {
+        if (::game.isInitialized) {
             game.time = time
             game.round = round
             viewModel.editGame(game)

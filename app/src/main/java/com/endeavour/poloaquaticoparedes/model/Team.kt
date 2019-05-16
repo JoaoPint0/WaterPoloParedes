@@ -1,9 +1,9 @@
 package com.endeavour.poloaquaticoparedes.model
 
-data class Team (val name: String,
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "teams")
+data class Team (@PrimaryKey val name: String,
                  val acronym: String,
-                 val logo: String,
-                 val players: MutableList<String>,
-                 val coaches: MutableList<String>){
-    constructor() : this("", "", "", mutableListOf<String>(), mutableListOf<String>())
-}
+                 val logo: String)

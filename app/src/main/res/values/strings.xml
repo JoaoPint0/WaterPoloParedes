@@ -111,5 +111,8 @@
     <string name="referee">Referee</string>
     <string name="match_over">Match Over</string>
     <string name="public_login"><u>Continue without an account</u></string>
+    <string name="empty_events">No Events Found</string>
+    <string name="empty_games">No game found for this season</string>
+    <string name="privacy_login">Privacy Policy</string>
 
 </resources>

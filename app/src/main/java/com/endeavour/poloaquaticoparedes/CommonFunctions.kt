@@ -21,7 +21,6 @@ import com.endeavour.poloaquaticoparedes.model.GameEventType
 import com.endeavour.poloaquaticoparedes.model.Leagues
 import com.google.android.material.textfield.TextInputEditText
 import com.savvyapps.togglebuttonlayout.ToggleButtonLayout
-import kotlinx.android.synthetic.main.create_event_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -50,7 +49,7 @@ fun formatCounter(time: Long): String {
     return format.format(Date(time))
 }
 
-fun getGameScore(game: Game, showTime:Boolean): String {
+fun getGameScore(game: Game, showTime: Boolean): String {
     return if (game.date.before(Date())) {
         if (game.activity.isEmpty()) "0 : 0" else {
 
@@ -59,7 +58,7 @@ fun getGameScore(game: Game, showTime:Boolean): String {
             " $homeGoals : $awayGoals "
         }
     } else {
-        if(showTime) formatTime(game.date) else " vs "
+        if (showTime) formatTime(game.date) else " vs "
     }
 }
 
@@ -67,7 +66,7 @@ fun loadGlideImage(view: ImageView, url: String?) {
 
     Glide.with(view)
         .load(if (url.isNullOrBlank()) R.drawable.paredes_logo else url)
-        .apply(RequestOptions().centerCrop())
+        .fitCenter()
         .into(view)
 }
 
@@ -156,6 +155,18 @@ fun ToggleButtonLayout.isSelected(field: String): Boolean {
     this.requestFocus()
 
     return this.selectedToggles().isNotEmpty()
+}
+
+fun leaguesTogglesAreSelected(young: ToggleButtonLayout, older: ToggleButtonLayout): Boolean {
+
+    val context = young.context
+
+    return if(young.selectedToggles().isEmpty() && older.selectedToggles().isEmpty()){
+        Toast.makeText(context, "Please choose a athlete level", Toast.LENGTH_SHORT).show()
+        false
+    } else {
+        true
+    }
 }
 
 fun createDatePicker(fragmentManager: FragmentManager, view: TextView) {

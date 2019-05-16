@@ -9,8 +9,8 @@
               android:background="@color/white">
 
     <ImageView android:id="@+id/dialog_team_logo"
-                android:layout_width="128dp"
-               android:layout_height="128dp"
+                android:layout_width="80dp"
+               android:layout_height="80dp"
                android:layout_gravity="center"
                android:contentDescription="@null"
                android:src="@drawable/paredes_logo"/>

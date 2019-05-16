@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -51,6 +52,12 @@ class LoginFragment : Fragment() {
         view.public_login_btn.setOnClickListener {
 
             loginUser("public")
+        }
+
+        view.privacy_btn.setOnClickListener {
+
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://sites.google.com/view/polo-aquatico-paredes"))
+            startActivity(browserIntent);
         }
 
         view.user_id_login_txt.setOnEditorActionListener { _, i, _ ->

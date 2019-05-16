@@ -28,15 +28,15 @@ class GamesListViewHolder(val view: View) : RecyclerView.ViewHolder(view)  {
 
     private fun showRepoData(game: Game) {
 
-        loadGlideImage(view.home_team_logo, game.home.logo)
-        view.home_team_name.text = game.home.name
+        loadGlideImage(view.home_team_logo, game.homeTeam.logo)
+        view.home_team_name.text = game.homeTeam.name
 
-        loadGlideImage(view.away_team_logo, game.away.logo)
-        view.away_team_name.text = game.away.name
+        loadGlideImage(view.away_team_logo, game.awayTeam.logo)
+        view.away_team_name.text = game.awayTeam.name
 
         view.game_date.text = formatGameDate(game.date)
         view.game_competition.text = game.competition
-        view.game_score_or_time.text = getGameScore(game, true)
+        view.game_score_or_time.text = formatTime(game.date)
         view.game_league.text = getLeagueText(view.context, game.target)
     }
 

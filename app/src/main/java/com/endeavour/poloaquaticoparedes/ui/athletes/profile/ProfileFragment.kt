@@ -2,7 +2,6 @@ package com.endeavour.poloaquaticoparedes.ui.athletes.profile
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,8 +25,7 @@ class ProfileFragment : Fragment() {
     private var cardId = ""
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         return inflater.inflate(R.layout.profile_fragment, container, false)
     }
@@ -35,18 +33,16 @@ class ProfileFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, Injection.provideAthletesViewModelFactory(context!!))
-                .get(AthletesViewModel::class.java)
+            .get(AthletesViewModel::class.java)
 
         cardId = arguments?.let {
             val safeArgs = ProfileFragmentArgs.fromBundle(it)
             safeArgs.cardId
         } ?: ""
 
-        val sharedPref = activity?.getSharedPreferences(
-                getString(R.string.shared_preferences), Context.MODE_PRIVATE)
+        val sharedPref = activity?.getSharedPreferences(getString(R.string.shared_preferences), Context.MODE_PRIVATE)
 
-        if (cardId == "0"){
-            Log.e("profileFrag","cardId ${sharedPref?.getString(getString(R.string.card_id), "")}"  )
+        if (cardId == "0") {
             cardId = sharedPref?.getString(getString(R.string.card_id), "") ?: "0"
         }
 
@@ -55,10 +51,7 @@ class ProfileFragment : Fragment() {
 
         if (sharedPref?.getString(getString(R.string.privileges), "") == "admin") setupEditAthlete(cardId)
 
-        new_payment_season.setOnClickListener {
-
-            showSeasonPicker()
-        }
+        new_payment_season.setOnClickListener { showSeasonPicker() }
 
     }
 
@@ -78,14 +71,14 @@ class ProfileFragment : Fragment() {
         builder.apply {
 
             setView(view)
-            setPositiveButton("Confirm "){ _, _ ->
+            setPositiveButton("Confirm ") { _, _ ->
 
                 viewModel.createMonthPayment(cardId.toLong(), view.season_picker.value, null).observe(profileFragment, Observer {
 
                     if (it) updateProfile()
                 })
             }
-            setNegativeButton("Cancel"){ _, _ ->
+            setNegativeButton("Cancel") { _, _ ->
 
             }
         }.show()
@@ -95,17 +88,12 @@ class ProfileFragment : Fragment() {
         view.season_picker.value = 2018
     }
 
-    private fun observeProfile(){
+    private fun observeProfile() {
 
         viewModel.getAthlete().observe(this, Observer {
 
             if(it != null) {
                 athlete_name.text = it.name
-                athlete_sex.text = when (it.gender) {
-                    "M" -> context!!.getString(R.string.male)
-                    "F" -> context!!.getString(R.string.female)
-                    else -> it.gender
-                }
                 athlete_level.text = getLeagueText(context, it.level)
 
                 athlete_birthday.text = formatDate(it.birthday)
@@ -137,7 +125,7 @@ class ProfileFragment : Fragment() {
 
     private fun setupPaymentsYear(cardId: String, yearsPaid: List<Int>) {
 
-       val adapter = PaymentSeasonAdapter()
+        val adapter = PaymentSeasonAdapter()
 
         athlete_payments_years_list.adapter = adapter
         athlete_payments_years_list.layoutManager = GridLayoutManager(context, 2)
@@ -150,6 +138,11 @@ class ProfileFragment : Fragment() {
     private fun setupParentsList(parents: List<Parent>) {
 
         parents_layout.removeAllViews()
+
+        if(parents.isEmpty()){
+            parents_card.visibility = View.GONE
+            return
+        }
 
         parents.forEach {
 

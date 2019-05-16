@@ -13,7 +13,7 @@ class GameViewModel(private val repository: WaterPoloRepository) : ViewModel() {
     private val version = MutableLiveData<Long>()
 
     private val dbEvents = Transformations.switchMap(version){ repository.searchAllEvents("")}
-    private val dbGames =  Transformations.switchMap(version){ repository.searchAllGames()}
+    val dbGames =  Transformations.switchMap(version){ repository.searchAllGames()}
 
     val events = MediatorLiveData<List<Event>>()
     val games = MediatorLiveData<List<Game>>()
@@ -39,14 +39,14 @@ class GameViewModel(private val repository: WaterPoloRepository) : ViewModel() {
         }.also { currentFilters = filters }
     }
 
-    private fun sortEvents(eventsList: List<Event>, currentFilters: Set<String>)= eventsList.filter { currentFilters.contains(it.target[0].name)}
-
-    private fun sortGames(gamesList: List<Game>, currentFilters: Set<String>) = gamesList.filter { currentFilters.contains(it.target.name)}
+    private fun sortEvents(eventsList: List<Event>, currentFilters: Set<String>) = eventsList.filter { currentFilters.contains(it.target[0]?.name)}
+    private fun sortGames(gamesList: List<Game>, currentFilters: Set<String>) = gamesList.filter { currentFilters.contains(it.target?.name)}
 
     fun getTeams() = repository.getTeams()
     fun createTeam(team: Team)= repository.createTeam(team)
 
-    fun getGameById(id: String) = repository.getGameById(id)
+    fun gameById(id:Long) = repository.gameById(id)
+
     fun createGame(game: Game) =  repository.createGame(game)
     fun editGame(game: Game) = repository.editGame(game)
     fun deleteGame(id: Long) =  repository.deleteGame(id)

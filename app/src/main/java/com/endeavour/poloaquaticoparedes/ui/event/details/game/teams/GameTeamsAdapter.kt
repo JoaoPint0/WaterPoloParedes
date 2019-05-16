@@ -2,18 +2,18 @@ package com.endeavour.poloaquaticoparedes.ui.event.details.game.teams
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.endeavour.poloaquaticoparedes.model.GameParticipants
+import com.endeavour.poloaquaticoparedes.model.GamePerson
 import com.endeavour.poloaquaticoparedes.model.Team
 
 class GameTeamsAdapter : RecyclerView.Adapter<GameTeamsViewHolder>() {
 
-    private var awayTeam = Team()
-    private var homeTeam = Team()
+    private var participants = GameParticipants(mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf())
 
     private var isPlayerList = true
 
-    fun setTeams(home: Team, away: Team, isPlayerList: Boolean) {
-        homeTeam = home
-        awayTeam = away
+    fun setTeams(participants: GameParticipants, isPlayerList: Boolean) {
+        this.participants = participants
         this.isPlayerList = isPlayerList
         notifyDataSetChanged()
     }
@@ -21,8 +21,8 @@ class GameTeamsAdapter : RecyclerView.Adapter<GameTeamsViewHolder>() {
     override fun onBindViewHolder(holder: GameTeamsViewHolder, position: Int) {
 
         holder.showData(
-            getName(homeTeam, position),
-            getName(awayTeam, position),
+            getName(if(isPlayerList) participants.homeTeamPlayerList else participants.homeTeamCoachList, position),
+            getName(if(isPlayerList) participants.awayTeamPlayerList else participants.awayTeamCoachList, position),
             position + 1,
             isPlayerList
         )
@@ -33,19 +33,21 @@ class GameTeamsAdapter : RecyclerView.Adapter<GameTeamsViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return if (isPlayerList) biggestSize(awayTeam.players, homeTeam.players) else biggestSize(awayTeam.coaches, homeTeam.coaches)
+        return if (isPlayerList){
+            biggestSize(participants.homeTeamPlayerList, participants.awayTeamPlayerList)
+        } else {
+            biggestSize(participants.homeTeamCoachList, participants.awayTeamCoachList)
+        }
     }
 
     private fun biggestSize(l1 : List<Any>, l2:List<Any>): Int{
         return if(l1.size > l2.size) l1.size else l2.size
     }
 
-    private fun getName(team: Team, position: Int): String{
+    private fun getName(list: List<GamePerson>, position: Int): String{
 
-        return if(isPlayerList && team.players.size > position){
-            team.players[position]
-        } else if(team.coaches.size > position){
-            team.coaches[position]
+        return if(list.size > position){
+            list[position].name
         } else {
             ""
         }

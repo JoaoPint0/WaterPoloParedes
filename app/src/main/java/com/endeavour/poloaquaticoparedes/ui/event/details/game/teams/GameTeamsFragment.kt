@@ -11,6 +11,7 @@ import com.endeavour.poloaquaticoparedes.Injection
 
 import com.endeavour.poloaquaticoparedes.R
 import com.endeavour.poloaquaticoparedes.model.Game
+import com.endeavour.poloaquaticoparedes.model.GamePerson
 import com.endeavour.poloaquaticoparedes.ui.event.GameViewModel
 import com.endeavour.poloaquaticoparedes.ui.event.details.GameDetailsFragmentArgs
 import kotlinx.android.synthetic.main.game_teams_fragment.*
@@ -21,9 +22,9 @@ class GameTeamsFragment : Fragment() {
     private val coachAdapter = GameTeamsAdapter()
 
     companion object {
-        fun newInstance(id: String): GameTeamsFragment {
+        fun newInstance(id: Long): GameTeamsFragment {
             val args = Bundle ()
-            args.putString("id", id)
+            args.putLong("id", id)
             val fragment = GameTeamsFragment()
             fragment.arguments = args
             return fragment
@@ -45,7 +46,7 @@ class GameTeamsFragment : Fragment() {
         val id = arguments?.let {
             val safeArgs = GameDetailsFragmentArgs.fromBundle(it)
             safeArgs.id
-        } ?: "0"
+        } ?: 0L
 
         players_list.apply {
             adapter = playersAdapter
@@ -56,22 +57,23 @@ class GameTeamsFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
 
-        viewModel.getGameById(id).observe(this, androidx.lifecycle.Observer {
-            home_team_title.text = it.home.name
-            away_team_title.text = it.away.name
+        viewModel.gameById(id).observe(this, androidx.lifecycle.Observer { game ->
+            if(game == null) return@Observer
+            home_team_title.text = game.homeTeam.name
+            away_team_title.text = game.awayTeam.name
 
-            playersAdapter.setTeams(it.home, it.away, true)
-            coachAdapter.setTeams(it.home, it.away, false)
+            playersAdapter.setTeams(game.participants, true)
+            coachAdapter.setTeams(game.participants, false)
 
-            referees_names.text = getRefereeNames(it)
+            referees_names.text = getRefereeNames(game)
         })
     }
 
     private fun getRefereeNames(game: Game): String {
         var result = ""
 
-        for (referee: String in game.referees){
-            result += " $referee,"
+        for (referee: GamePerson in game.participants.refereeList){
+            result += " ${referee.name},"
         }
 
         return result

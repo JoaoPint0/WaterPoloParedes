@@ -16,9 +16,9 @@ import kotlinx.android.synthetic.main.game_activity_fragment.*
 class GameActivityFragment : Fragment() {
 
     companion object {
-        fun newInstance(id: String): GameActivityFragment {
+        fun newInstance(id: Long): GameActivityFragment {
             val args = Bundle ()
-            args.putString("id", id)
+            args.putLong("id", id)
             val fragment = GameActivityFragment()
             fragment.arguments = args
             return fragment
@@ -38,13 +38,15 @@ class GameActivityFragment : Fragment() {
         val id = arguments?.let {
             val safeArgs = GameDetailsFragmentArgs.fromBundle(it)
             safeArgs.id
-        } ?: "0"
+        } ?: 0L
 
         activity_list.adapter = adapter
         activity_list.layoutManager = LinearLayoutManager(context)
 
-        viewModel.getGameById(id).observe(this, androidx.lifecycle.Observer {
-            adapter.setActivities(it.activity)
+        viewModel.gameById(id).observe(this, androidx.lifecycle.Observer { game ->
+
+            if(game == null) return@Observer
+            adapter.setActivities(game.activity)
         })
     }
 }

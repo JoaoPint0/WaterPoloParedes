@@ -25,6 +25,15 @@
                           android:orientation="vertical"
                           tools:context=".ui.lobby.LobbyFragment">
 
+                <TextView
+                        android:id="@+id/loading_games"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:gravity="center"
+                        android:text="@string/empty_games"
+                        android:textSize="14sp"
+                        app:goneUnless="@{!gamesExist}"/>
+
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/games_list"
                         android:layout_width="match_parent"
@@ -32,34 +41,34 @@
                         android:layout_margin="16dp"
                         app:goneUnless="@{gamesExist}"/>
 
-                    <TextView
-                            android:id="@+id/events_filter"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="24dp"
-                            android:drawablePadding="8dp"
-                            android:drawableEnd="@drawable/ic_filter_list"
-                            android:layout_gravity="end"
-                            android:text="Filter"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"/>
+                <TextView
+                        android:id="@+id/events_filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:drawablePadding="8dp"
+                        android:drawableEnd="@drawable/ic_filter_list"
+                        android:layout_gravity="end"
+                        android:text="Filter"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"/>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/events_list"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
-                            app:goneUnless="@{eventsExist}"/>
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/events_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        app:goneUnless="@{eventsExist}"/>
 
-                    <TextView
-                            android:id="@+id/loading_events"
-                            android:layout_width="match_parent"
-                            android:layout_height="240dp"
-                            android:gravity="center"
-                            android:text="@string/empty_list"
-                            android:textSize="14sp"
-                            app:goneUnless="@{!eventsExist}"/>
+                <TextView
+                        android:id="@+id/loading_events"
+                        android:layout_width="match_parent"
+                        android:layout_height="240dp"
+                        android:gravity="center"
+                        android:text="@string/empty_events"
+                        android:textSize="14sp"
+                        app:goneUnless="@{!eventsExist}"/>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
@@ -71,7 +80,6 @@
                 android:layout_marginBottom="16dp"
                 app:adSize="SMART_BANNER"
                 app:adUnitId="ca-app-pub-9186906227587004/6941172822"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>

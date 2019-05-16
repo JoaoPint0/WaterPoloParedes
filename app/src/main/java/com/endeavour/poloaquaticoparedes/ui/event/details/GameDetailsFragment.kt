@@ -7,25 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionInflater
 import com.endeavour.poloaquaticoparedes.Injection
 import com.endeavour.poloaquaticoparedes.R
-import com.endeavour.poloaquaticoparedes.databinding.GameDetailsFragmentStartBinding
-import com.endeavour.poloaquaticoparedes.model.GameEventType
+import com.endeavour.poloaquaticoparedes.databinding.GameDetailsFragmentBinding
+import com.endeavour.poloaquaticoparedes.model.Game
 import com.endeavour.poloaquaticoparedes.ui.event.GameViewModel
 import com.endeavour.poloaquaticoparedes.ui.event.details.game.GamePagerAdapter
 import com.endeavour.poloaquaticoparedes.ui.event.details.game.activity.GameActivityFragment
 import com.endeavour.poloaquaticoparedes.ui.event.details.game.editor.GameEditorFragment
 import com.endeavour.poloaquaticoparedes.ui.event.details.game.info.GameInfoFragment
 import com.endeavour.poloaquaticoparedes.ui.event.details.game.teams.GameTeamsFragment
-import kotlinx.android.synthetic.main.game_details_fragment_start.*
+import kotlinx.android.synthetic.main.game_details_fragment.*
 
 
 class GameDetailsFragment : Fragment() {
 
     private var pagerAdapter: FragmentPagerAdapter? = null
-    private lateinit var binding: GameDetailsFragmentStartBinding
+    private lateinit var binding: GameDetailsFragmentBinding
     private val sharedPref by lazy { context!!.getSharedPreferences(getString(R.string.shared_preferences), Context.MODE_PRIVATE) }
     private val viewModel by lazy {
         ViewModelProviders.of(activity!!, Injection.provideGameViewModelFactory(context!!)).get(
@@ -37,7 +38,7 @@ class GameDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = GameDetailsFragmentStartBinding.inflate(inflater)
+        binding = GameDetailsFragmentBinding.inflate(inflater)
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -54,41 +55,54 @@ class GameDetailsFragment : Fragment() {
         val id = arguments?.let {
             val safeArgs = GameDetailsFragmentArgs.fromBundle(it)
             safeArgs.id
-        } ?: "0"
+        } ?: 0L
 
-        viewModel.getGameById(id).observe(this, androidx.lifecycle.Observer {
-            binding.game = it
-            it.id = id
+        viewModel.gameById(id).observe(this, Observer {game ->
 
-            if (pagerAdapter == null) {
-                val position = when {
-                    sharedPref.getString(getString(R.string.privileges), "") == "admin" -> 3
-                    it.activity.isNotEmpty() -> 0
-                    else -> 2
+            if(game != null){
+                binding.game = game
+
+                if (pagerAdapter == null) {
+                    val position = when {
+                        sharedPref.getString(getString(R.string.privileges), "") == "admin" -> 3
+                        game.activity.isNotEmpty() -> 0
+                        else -> 2
+                    }
+                    setUpViewPager(game, position)
                 }
-                setUpViewPager(id, position)
-            }
-
-            if(it.activity.filter { it.type == GameEventType.MATCH_OVER }.any()){
-                game_details_timer.visibility = View.GONE
-                game_details_round.visibility = View.GONE
             }
         })
+
     }
 
-    private fun setUpViewPager(id: String, position: Int) {
+    private fun setUpViewPager(game: Game, position: Int) {
 
-        val isAdmin = sharedPref.getString(getString(R.string.privileges), "") == "admin"
+        val isAdmin = false//sharedPref.getString(getString(R.string.privileges), "") == "admin"
 
-        val list = mutableListOf(
-            GameActivityFragment.newInstance(id),
-            GameTeamsFragment.newInstance(id),
-            GameInfoFragment.newInstance(id)
-        )
+        val list = mutableListOf<Fragment>()
+        val names = mutableListOf<String>()
 
-        if (isAdmin) list.add(GameEditorFragment.newInstance(id))
+        if(game.activity.isNotEmpty()) {
+            list.add(GameActivityFragment.newInstance(game.id))
+            list.add(GameTeamsFragment.newInstance(game.id))
 
-        pagerAdapter = GamePagerAdapter(childFragmentManager, list)
+            names.apply {
+                add("Live")
+                add("Equipas")
+            }
+        }
+
+        list.add(GameInfoFragment.newInstance(game.id))
+        names.add("Info")
+
+        if (isAdmin){
+            list.add(GameEditorFragment.newInstance(game.id))
+            names.add("Admin")
+        }
+
+        if(list.size == 1) tabs.visibility = View.GONE else View.VISIBLE
+
+        pagerAdapter = GamePagerAdapter(childFragmentManager, list, names)
 
         game_pager.apply {
             offscreenPageLimit = 1

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
 import com.endeavour.poloaquaticoparedes.*
 import com.endeavour.poloaquaticoparedes.model.Event
 import com.endeavour.poloaquaticoparedes.ui.event.EventViewModel
@@ -76,7 +77,10 @@ class EventDetailsFragment : Fragment() {
 
     private fun setupEventPicture(picture: String) {
 
-        loadGlideImage(event_picture, picture)
+        Glide.with(event_picture)
+            .load(if (picture.isNullOrBlank()) R.drawable.paredes_logo else picture)
+            .centerCrop()
+            .into(event_picture)
     }
 
 }

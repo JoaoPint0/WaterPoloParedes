@@ -11,10 +11,18 @@ class WaterPoloRepository(
         private val service: WaterPoloService,
         private val cache: WaterPoloLocalCache) {
 
+    companion object {
+
+        @Volatile
+        private var INSTANCE: WaterPoloRepository? = null
+
+        fun getInstance(service: WaterPoloService, cache: WaterPoloLocalCache) = INSTANCE ?: WaterPoloRepository(service, cache)
+    }
+
     private val TAG = "WaterPoloRepository"
+    private var games = mutableListOf<Game>()
 
     fun searchAllAthletes(query: String): LiveData<List<Athlete>> {
-
 
         searchAllAthletes(service, {
 
@@ -28,6 +36,20 @@ class WaterPoloRepository(
         return if (query.isNotEmpty()) cache.athletesByNameCardIdOrLevel(query) else cache.allAthletes()
     }
 
+    fun validateUser(loginObject: LoginUser): LiveData<Boolean> {
+
+        val success = MutableLiveData<Boolean>()
+
+        validateUser(service, loginObject,{
+
+            success.value = it?.success == true
+        },{
+            success.value = false
+        })
+
+        return success
+    }
+
     fun searchAthleteByCardId(cardId: String): LiveData<ComplexAthlete> {
 
         val athlete = MutableLiveData<ComplexAthlete>()
@@ -37,20 +59,6 @@ class WaterPoloRepository(
             Log.e(TAG, "search ComplexAthlete  response")
         }, {
             Log.e(TAG, "search ComplexAthlete error $it")
-        })
-
-        return athlete
-    }
-
-    fun searchAthletePaymentBySeason(cardId: Long, year: Int): LiveData<List<Payment>> {
-
-        val athlete = MutableLiveData<List<Payment>>()
-
-        searchAthletePaymentBySeason(service, cardId, year, {
-            athlete.value = it
-            Log.e(TAG, "search athlete $cardId payments response")
-        }, {
-            Log.e(TAG, "search athlete $cardId payments error $it")
         })
 
         return athlete
@@ -132,6 +140,36 @@ class WaterPoloRepository(
         return success
     }
 
+    fun searchAthletePaymentBySeason(cardId: Long, year: Int): LiveData<List<Payment>> {
+
+        val athlete = MutableLiveData<List<Payment>>()
+
+        searchAthletePaymentBySeason(service, cardId, year, {
+            athlete.value = it
+            Log.e(TAG, "search athlete $cardId payments response")
+        }, {
+            Log.e(TAG, "search athlete $cardId payments error $it")
+        })
+
+        return athlete
+    }
+
+    fun createPayment(payments: CreatePayment) :LiveData<Boolean> {
+
+        val success = MutableLiveData<Boolean>()
+
+        createAthletePayments(service, payments,{
+
+            success.value = it?.success
+
+        },{
+            success.value = false
+            Log.e(TAG, "createPayment error $it")
+        })
+
+        return success
+    }
+
     fun searchAllEvents(query: String): LiveData<List<Event>> {
 
         searchAllEvents(service, {
@@ -145,23 +183,7 @@ class WaterPoloRepository(
         return if (query.isNotEmpty()) cache.eventsByName(query) else cache.allEvents()
     }
 
-    fun getEventById(id: Long): LiveData<Event> {
-
-        val event = MutableLiveData<Event>()
-
-        getEventById(service, id,{
-
-            if (it != null){
-
-                event.value = it
-                cache.insertEvents(listOf(it)) {}
-            }
-        },{
-            Log.e(TAG, "getEventById  $id  error $it")
-        })
-
-        return event
-    }
+    fun getEventById(id: Long) = cache.eventsById(id)
 
     fun createEvent(event: Event): LiveData<ApiResponse> {
 
@@ -226,74 +248,19 @@ class WaterPoloRepository(
         return success
     }
 
-    fun searchAllGames(): LiveData<List<Game>> {
-
-        return CloudFireStore().getGames()
-    }
-
-    fun getGameById(id: String): LiveData<Game> {
-
-        return CloudFireStore().getGameById(id)
-    }
-
-    fun createGame(game: Game): LiveData<ApiResponse> {
-
-        return CloudFireStore().addGame(game)
-    }
-
-    fun editGame(game: Game): LiveData<ApiResponse> {
-
-        return CloudFireStore().updateGame(game)
-    }
-
-    fun deleteGame(id: Long): LiveData<Boolean> {
-
-        val success = MutableLiveData<Boolean>()
-
-        return success
-    }
-
-    fun createPayment(payments: CreatePayment) :LiveData<Boolean> {
-
-        val success = MutableLiveData<Boolean>()
-
-        createAthletePayments(service, payments,{
-
-            success.value = it?.success
-
-        },{
-            success.value = false
-            Log.e(TAG, "createPayment error $it")
-        })
-
-        return success
-    }
-
-    fun validateUser(loginObject: LoginUser): LiveData<Boolean> {
-
-        val success = MutableLiveData<Boolean>()
-
-        validateUser(service, loginObject,{
-
-            success.value = it?.success == true
-        },{
-            success.value = false
-        })
-
-        return success
-    }
-
     fun getTeams(): LiveData<List<Team>> {
-        val teams = MutableLiveData<List<Team>>()
 
         searchAllTeams(service, {
             Log.e(TAG, "search All Teams Success $it")
-            teams.value = it
+            cache.deleteAllTeams()
+            cache.insertTeams(it){
+                Log.e(TAG, "search All Teams insert success $it")
+            }
         },{
             Log.e(TAG, "search All Teams Error $it")
         })
 
-        return teams
+        return cache.allTeams()
     }
 
     fun createTeam(team: Team): LiveData<ApiResponse> {
@@ -302,11 +269,79 @@ class WaterPoloRepository(
 
         createTeam(service, team, {
             Log.e(TAG, "create Team  $it")
-            success.value = it
+            if(it?.success == true){
+                cache.insertTeams(listOf(team)){
+                }
+                success.value = it
+            }else {
+                success.value = ApiResponse("", false, "0")
+            }
         }, {
             success.value = ApiResponse("", false, "0")
             Log.e(TAG, "create Event error $it")
         })
+        return success
+    }
+
+    fun searchAllGames(): LiveData<List<Game>> {
+
+        val liveGames = MutableLiveData<List<Game>>()
+        searchAllGames(service, {
+            Log.e(TAG, "search All Games  $it")
+
+            games.clear()
+            games.addAll(it)
+            liveGames.value = games
+        }, {
+            Log.e(TAG, "search All Games Error $it")
+        })
+        return liveGames
+    }
+
+    fun gameById(id: Long) :LiveData<Game> {
+
+        val game = MutableLiveData<Game>()
+
+        game.value = games.firstOrNull { it.id == id }
+
+        getGameById(service, id,{
+            game.value = it
+        },{
+            Log.e(TAG, "search Game by Id Error $it")
+        })
+
+        return game
+    }
+
+    fun createGame(game: Game): LiveData<ApiResponse> {
+
+        val success = MutableLiveData<ApiResponse>()
+
+        createGame(service, game, {
+
+            game.id = it?.id?.toLong() ?: 0L
+            games.add(game)
+            Log.e(TAG, "create Game  $it")
+            success.value = it
+        }, {
+            success.value = ApiResponse("", false, "0")
+            Log.e(TAG, "create Game error $it")
+        })
+
+        return success
+    }
+
+    fun editGame(game: Game): LiveData<ApiResponse> {
+
+        val success = MutableLiveData<ApiResponse>()
+
+        return success
+    }
+
+    fun deleteGame(id: Long): LiveData<ApiResponse> {
+
+        val success = MutableLiveData<ApiResponse>()
+
         return success
     }
 

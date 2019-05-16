@@ -3,9 +3,7 @@ package com.endeavour.poloaquaticoparedes
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import com.endeavour.poloaquaticoparedes.api.WaterPoloService
-import com.endeavour.poloaquaticoparedes.database.AthleteDatabase
-import com.endeavour.poloaquaticoparedes.database.EventDatabase
-import com.endeavour.poloaquaticoparedes.database.WaterPoloLocalCache
+import com.endeavour.poloaquaticoparedes.database.*
 import com.endeavour.poloaquaticoparedes.repository.WaterPoloRepository
 import com.endeavour.poloaquaticoparedes.ui.athletes.AthletesViewModelFactory
 import com.endeavour.poloaquaticoparedes.ui.event.EventViewModelFactory
@@ -15,14 +13,15 @@ import java.util.concurrent.Executors
 object Injection {
 
     private fun provideCache(context: Context): WaterPoloLocalCache {
-        val athletesDB = AthleteDatabase.getInstance(context)
-        val eventsDB = EventDatabase.getInstance(context)
+        val athletesDB = PoloDatabase.getInstance(context)
+        val eventsDB = PoloDatabase.getInstance(context)
+        val gamesDB = PoloDatabase.getInstance(context)
 
-        return WaterPoloLocalCache(athletesDB.athleteDao(), eventsDB.eventDao(), Executors.newSingleThreadExecutor())
+        return WaterPoloLocalCache(athletesDB.athleteDao(), eventsDB.eventDao(),gamesDB.teamDao(), Executors.newSingleThreadExecutor())
     }
 
     fun provideRepository(context: Context): WaterPoloRepository {
-        return WaterPoloRepository(WaterPoloService.create(context), provideCache(context))
+        return WaterPoloRepository.getInstance(WaterPoloService.create(context), provideCache(context))
     }
 
     fun provideAthletesViewModelFactory(context: Context): ViewModelProvider.Factory {

@@ -25,8 +25,10 @@ class CreateAthleteFragment : Fragment() {
 
     var cardId = ""
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         return inflater.inflate(R.layout.create_athlete_fragment, container, false)
     }
@@ -104,15 +106,18 @@ class CreateAthleteFragment : Fragment() {
             athlete_observation_edit.text = it.observations.toEditable()
 
             if (it.parents.isNotEmpty()) {
-                parent_1_name_edit.text = it.parents[0].name.toEditable()
-                parent_1_email_edit.text = it.parents[0].email.toEditable()
-                parent_1_mobile_number_edit.text = it.parents[0].mobileNumber.toString().toEditable()
+                val parent = it.parents[0]
+
+                parent_1_name_edit.text = parent.name.toEditable()
+                parent_1_email_edit.text = parent.email.toEditable()
+                parent_1_mobile_number_edit.text = if(parent.mobileNumber != 0L) parent.toString().toEditable() else "".toEditable()
             }
 
             if (it.parents.size > 1) {
-                parent_2_name_edit.text = it.parents[1].name.toEditable()
-                parent_2_email_edit.text = it.parents[1].email.toEditable()
-                parent_2_mobile_number_edit.text = it.parents[1].mobileNumber.toString().toEditable()
+                val parent = it.parents[1]
+                parent_2_name_edit.text = parent.name.toEditable()
+                parent_2_email_edit.text = parent.email.toEditable()
+                parent_2_mobile_number_edit.text = if(parent.mobileNumber != 0L) parent.toString().toEditable() else "".toEditable()
             }
         })
     }
@@ -172,17 +177,40 @@ class CreateAthleteFragment : Fragment() {
 
         return athlete_name_edit.isNotEmpty() &&
                 athlete_sex_toggle.isSelected(getString(R.string.athlete_toggle_sex_error)) &&
-                (athlete_young_leagues_toggle.isSelected(getString(R.string.athlete_toggle_level_error)) ||
-                        athlete_older_leagues_toggle.isSelected(getString(R.string.athlete_toggle_level_error)) ) &&
+                leaguesTogglesAreSelected(athlete_young_leagues_toggle, athlete_older_leagues_toggle) &&
                 athlete_address_edit.isNotEmpty() &&
                 athlete_mobile_number_edit.isNotEmpty() &&
                 athlete_email_edit.isNotEmpty() &&
                 athlete_observation_edit.isNotEmpty() &&
                 athlete_postal_code_edit.isNotEmpty() &&
-                parent_1_name_edit.isNotEmpty() &&
-                parent_1_email_edit.isNotEmpty() &&
-                parent_1_mobile_number_edit.isNotEmpty()
+                areParentFieldValid()
+    }
 
+    private fun areParentFieldValid(): Boolean {
+
+        return if (isUnder18()) {
+            parent_1_name_edit.isNotEmpty() &&
+                    parent_1_email_edit.isNotEmpty() &&
+                    parent_1_mobile_number_edit.isNotEmpty()
+        } else {
+            true
+        }
+    }
+
+    private fun isUnder18(): Boolean {
+        val (day, month, year) = athlete_birthday.text.toString().split("/").map { it.toInt() }
+        val dob = Calendar.getInstance()
+        val today = Calendar.getInstance()
+
+        dob.set(year, month, day)
+
+        var age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR)
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            age--
+        }
+
+        return age < 18
     }
 
     private fun createComplexAthleteObject(): ComplexAthlete {
@@ -190,26 +218,38 @@ class CreateAthleteFragment : Fragment() {
         val (day, month, year) = athlete_birthday.text.toString().split("/").map { it.toInt() }
         if (cardId.isEmpty()) cardId = athlete_card_id_edit.text.toString()
 
-        return ComplexAthlete(athlete_name_edit.text.toString(),
-                athlete_address_edit.text.toString(),
-                athlete_postal_code_edit.text.toString(),
-                Date(year - 1900, month - 1, day),
-                athlete_sex_toggle.selectedToggles()[0].title.toString(),
-                athlete_mobile_number_edit.text.toString().toLong(),
-                listOf(Parent(parent_1_name_edit.text.toString(),
-                        parent_1_email_edit.text.toString(),
-                        parent_1_mobile_number_edit.text.toString().toLong()),
-                        Parent(parent_2_name_edit.text.toString(),
-                                parent_2_email_edit.text.toString(),
-                                if (parent_2_mobile_number_edit.text.toString().isEmpty()) 0L else parent_2_mobile_number_edit.text.toString().toLong())),
-                listOf(Date().year - 1, Date().year),
-                athlete_email_edit.text.toString(),
-                cardId.toLong(),
-                "m",
-                getEventTargets(athlete_young_leagues_toggle, athlete_older_leagues_toggle, athlete_sex_toggle)[0],
-                athlete_observation_edit.text.toString(),
-                true,
-                true,
-                false)
+        return ComplexAthlete(
+            athlete_name_edit.text.toString(),
+            athlete_address_edit.text.toString(),
+            athlete_postal_code_edit.text.toString(),
+            Date(year - 1900, month - 1, day),
+            athlete_sex_toggle.selectedToggles()[0].title.toString(),
+            athlete_mobile_number_edit.text.toString().toLong(),
+            createParentsList(),
+            listOf(Date().year - 1, Date().year),
+            athlete_email_edit.text.toString(),
+            cardId.toLong(),
+            "m",
+            getEventTargets(athlete_young_leagues_toggle, athlete_older_leagues_toggle, athlete_sex_toggle)[0],
+            athlete_observation_edit.text.toString(),
+            true,
+            true,
+            false
+        )
+    }
+
+    private fun createParentsList(): List<Parent> {
+
+        val list = mutableListOf<Parent>()
+
+        val parentOne = Parent(parent_1_name_edit.text.toString(), parent_1_email_edit.text.toString(),
+            if (parent_1_mobile_number_edit.text.toString().isEmpty()) 0L else parent_1_mobile_number_edit.text.toString().toLong())
+        val parentTwo = Parent(parent_2_name_edit.text.toString(), parent_2_email_edit.text.toString(),
+            if (parent_2_mobile_number_edit.text.toString().isEmpty()) 0L else parent_2_mobile_number_edit.text.toString().toLong())
+
+        if(parentOne.name.isNotBlank()) list.add(parentOne)
+        if(parentTwo.name.isNotBlank()) list.add(parentTwo)
+
+        return list
     }
 }

@@ -17,9 +17,9 @@ class GameInfoFragment : Fragment() {
     private lateinit var binding: GameInfoFragmentBinding
 
     companion object {
-        fun newInstance(id: String): GameInfoFragment {
+        fun newInstance(id: Long): GameInfoFragment {
             val args : Bundle = Bundle ()
-            args.putString("id", id)
+            args.putLong("id", id)
             val fragment = GameInfoFragment()
             fragment.arguments = args
             return fragment
@@ -44,10 +44,12 @@ class GameInfoFragment : Fragment() {
         val id = arguments?.let {
             val safeArgs = GameDetailsFragmentArgs.fromBundle(it)
             safeArgs.id
-        } ?: "0"
+        } ?: 0L
 
-        viewModel.getGameById(id).observe(this, androidx.lifecycle.Observer {
-            binding.game = it
+        viewModel.gameById(id).observe(this, androidx.lifecycle.Observer { game ->
+
+            if(game == null) return@Observer
+            binding.game = game
         })
     }
 }

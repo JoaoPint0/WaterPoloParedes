@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.endeavour.poloaquaticoparedes.*
-import com.endeavour.poloaquaticoparedes.model.Game
-import com.endeavour.poloaquaticoparedes.model.Leagues
-import com.endeavour.poloaquaticoparedes.model.Team
+import com.endeavour.poloaquaticoparedes.model.*
 import com.endeavour.poloaquaticoparedes.ui.event.GameViewModel
 import com.savvyapps.togglebuttonlayout.Toggle
 import kotlinx.android.synthetic.main.create_game_fragment.*
@@ -20,7 +18,7 @@ import java.util.*
 
 class CreateGameFragment : Fragment() {
 
-    private var id = "0"
+    private var id = 0L
     private val viewModel by lazy {
         ViewModelProviders.of(this, Injection.provideGameViewModelFactory(context!!)).get(
             GameViewModel::class.java
@@ -38,7 +36,7 @@ class CreateGameFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if (id != "0") {
+        if (id != 0L) {
 
         } else {
             game_date.text = formatDate(Date())
@@ -46,9 +44,9 @@ class CreateGameFragment : Fragment() {
         }
 
         viewModel.getTeams().observe(this, androidx.lifecycle.Observer {
-
+            teams.clear()
             teams.addAll(it)
-            adapter.setTeams(teams)
+            adapter.setTeams(it)
 
             game_creation_home_team.adapter = adapter
             game_creation_away_team.adapter = adapter
@@ -73,7 +71,7 @@ class CreateGameFragment : Fragment() {
 
             val game = createGameObject()
 
-            if (id == "0") createGame() else editGame()
+            if (id == 0L) createGame() else editGame()
         }
 
         game_target_young_leagues_toggle.onToggledListener = { _, selected ->
@@ -102,13 +100,13 @@ class CreateGameFragment : Fragment() {
             id,
             getHomeTeam(),
             getAwayTeam(),
+            GameParticipants(mutableListOf(),mutableListOf(),mutableListOf(),mutableListOf(),mutableListOf()),
             getGameTargets(),
             Date(year - 1900, month - 1, day, hour, minute, 0),
             game_competition_edit.text.toString(),
             game_location_edit.text.toString(),
             1,
             480000,
-            mutableListOf(),
             mutableListOf()
         )
     }
@@ -124,7 +122,7 @@ class CreateGameFragment : Fragment() {
             if (it.success) {
 
                 val bundle = Bundle()
-                bundle.putString("id", it.id)
+                bundle.putLong("id", it.id.toLong())
                 findNavController(this).navigate(R.id.createdGame, bundle)
             } else {
                 Toast.makeText(context, getString(R.string.create_error), Toast.LENGTH_SHORT).show()
@@ -142,7 +140,7 @@ class CreateGameFragment : Fragment() {
 
             if (it.success) {
                 val bundle = Bundle()
-                bundle.putString("id", game.id)
+                bundle.putLong("id", game.id)
                 findNavController(this).navigate(R.id.createdGame, bundle)
             } else {
                 Toast.makeText(context, getString(R.string.edit_error), Toast.LENGTH_SHORT).show()
@@ -153,7 +151,7 @@ class CreateGameFragment : Fragment() {
     private fun deleteGame(id: Long) {
 
         viewModel.deleteGame(id).observe(this, androidx.lifecycle.Observer {
-            if (it == true) {
+            if (it.success == true) {
                 findNavController(this).navigate(R.id.mainFragment)
             } else {
                 Toast.makeText(context, getString(R.string.delete_error), Toast.LENGTH_SHORT).show()
